@@ -19,7 +19,9 @@ public interface PersonMapper {
     Person DtoToEntity(PersonDto dto);
 
     @Mappings({
-            @Mapping(source = "personRolesById", target = "roles",qualifiedByName = "getRoles")
+            @Mapping(source = "personRolesById", target = "roles",qualifiedByName = "getRoles"),
+            @Mapping(target = "usedLeaves" , expression = "java(entity.getUsedLeaves())"),
+            @Mapping(target = "remainingLeaves" , expression = "java(entity.getRemainingLeaves())")
     })
     PersonDto entityToDto(Person entity);
 

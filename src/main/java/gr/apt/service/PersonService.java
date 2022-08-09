@@ -15,11 +15,9 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +55,7 @@ public class PersonService {
     public Boolean create(PersonDto dto) throws LmsException {
         try {
             Person entity = mapper.DtoToEntity(dto);
-            entity.setNumberOfLeaves(calculateDaysOfLeaves(dto.getDateOfEmployment()));
+            entity.setNumberOfLeaves(calculateTotalNumberOfLeaves(dto.getDateOfEmployment()));
             repository.persistAndFlush(entity);
 
             //create notification
@@ -107,7 +105,7 @@ public class PersonService {
     public Boolean refreshDaysOfLeaves() throws LmsException {
         try {
             List<Person> list = repository.listAll();
-            list.forEach(p -> p.setNumberOfLeaves(calculateDaysOfLeaves(p.getDateOfEmployment())));
+            list.forEach(p -> p.setNumberOfLeaves(calculateTotalNumberOfLeaves(p.getDateOfEmployment())));
             repository.persist(list);
             return true;
         } catch (Exception ex) {
@@ -115,9 +113,9 @@ public class PersonService {
         }
     }
 
-    private Integer calculateDaysOfLeaves(LocalDate dateOfEmployment) {
-        Integer leaves = 0;
-        Long totalDays = ChronoUnit.DAYS.between(dateOfEmployment,LocalDate.of(LocalDate.now().getYear(), Month.DECEMBER, 31));//compareTo(dateOfEmployment);
+    private Integer calculateTotalNumberOfLeaves(LocalDate dateOfEmployment) {
+        int leaves = 0;
+        long totalDays = ChronoUnit.DAYS.between(dateOfEmployment,LocalDate.of(LocalDate.now().getYear(), Month.DECEMBER, 31));//compareTo(dateOfEmployment);
         if (totalDays > 25 * 365) {
             leaves = 26;
         } else if (totalDays > 10 * 365) {
@@ -127,7 +125,7 @@ public class PersonService {
         } else if (totalDays >= 365) {
             leaves = 21;
         } else {
-            Integer workingDays = 0;
+            int workingDays = 0;
             for (int i = dateOfEmployment.getDayOfMonth(); i <= dateOfEmployment.getMonth().maxLength(); i++) {
                 DayOfWeek day = LocalDate.of(dateOfEmployment.getYear(), dateOfEmployment.getMonth(), i).getDayOfWeek();
                 if (!(/*day.equals(DayOfWeek.SATURDAY) || */day.equals(DayOfWeek.SUNDAY))) {

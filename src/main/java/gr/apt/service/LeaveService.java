@@ -94,7 +94,7 @@ public class LeaveService {
     public Boolean create(LeaveDto dto) throws LmsException {
         try {
             Leave entity = mapper.DtoToEntity(dto);
-            if (entity.getType().equals(LeaveType.PAYED_LEAVE)) {
+            if (entity.getType().equals(LeaveType.PAID_LEAVE)) {
                 Person person = personRepository.findById(entity.getPersonId());
                 if (person == null)
                     throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not exist");
@@ -147,7 +147,7 @@ public class LeaveService {
     public Boolean approve(ApproveLeaveDto dto) throws LmsException {
         Leave entity = repository.findById(dto.getId());
         if (entity != null) {
-            if (dto.getApproved().equals(YesOrNo.YES) && dto.getType().equals(LeaveType.PAYED_LEAVE)) {
+            if (dto.getApproved().equals(YesOrNo.YES) && dto.getType().equals(LeaveType.PAID_LEAVE)) {
                 if (entity.getPersonByPersonId().getRemainingLeaves() < entity.getNumberOfRequestedLeaves()) {
                     throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
                 }

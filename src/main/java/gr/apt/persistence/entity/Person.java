@@ -77,14 +77,8 @@ public class Person extends AbstractEntity {
     @OneToMany(mappedBy = "personByPersonId")
     private Collection<PersonRoles> personRolesById;
 
-    @Transient
-    private Integer usedLeaves;
-
-    @Transient
-    private Integer remainingLeaves;
-
     public Integer getRemainingLeaves() {
-        return this.getNumberOfLeaves() - this.getUsedLeaves();
+        return this.numberOfLeaves - this.getUsedLeaves();
     }
 
     public Integer getUsedLeaves() {
@@ -92,7 +86,7 @@ public class Person extends AbstractEntity {
         if (!leavesById.isEmpty()) {
             for (Leave leave : leavesById) {
                 if(leave.getApproved() != null && leave.getApproved().equals(YesOrNo.YES)) {
-                    if (leave.getType().equals(LeaveType.PAYED_LEAVE)) {
+                    if (leave.getType().equals(LeaveType.PAID_LEAVE)) {
                         used = used + leave.getNumberOfRequestedLeaves();
                     }
                 }

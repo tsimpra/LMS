@@ -72,9 +72,9 @@ public class Leave extends AbstractEntity {
     private Integer numberOfRequestedLeaves;
 
     public Integer getNumberOfRequestedLeaves() {
-        Integer daysCount = this.getEndDate().compareTo(this.getStartDate()) + 1;
-        Integer weekendsCount =0;
-        Integer publicHolidays =0;
+        int daysCount = this.getEndDate().compareTo(this.getStartDate()) + 1;
+        int weekendsCount =0;
+        int publicHolidays =0;
         for(int i=0;i<daysCount;i++){
             DayOfWeek day = this.getStartDate().plusDays(i).getDayOfWeek();
             if(day.equals(DayOfWeek.SATURDAY) || day.equals(DayOfWeek.SUNDAY)){
@@ -86,7 +86,6 @@ public class Leave extends AbstractEntity {
                 publicHolidays++;
             }
         }
-        Integer actualDaysOfLeave = daysCount - weekendsCount - publicHolidays;
-        return actualDaysOfLeave;
+        return daysCount - weekendsCount - publicHolidays;
     }
 }
