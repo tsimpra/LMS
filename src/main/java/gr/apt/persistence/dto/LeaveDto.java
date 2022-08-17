@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import gr.apt.persistence.entity.superclass.AbstractEntity;
 import gr.apt.persistence.enumeration.LeaveType;
-import gr.apt.persistence.enumeration.YesOrNo;
 import lombok.Data;
 
 import java.math.BigInteger;
