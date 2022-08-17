@@ -24,11 +24,11 @@ public class Notification extends AbstractEntity {
     @Column(name = "content", nullable = false, length = 4000)
     private String content;
 
-    @OneToMany(mappedBy ="notificationByNotifId")
-    private Set<NotificationRecipientPersons> recipientPersons;
-
-    @OneToMany(mappedBy = "notificationByNotifId")
-    private Set<NotificationRecipientRoles> recipientRoles;
+//    @OneToMany(mappedBy ="notificationByNotifId")
+//    private Set<NotificationRecipientPersons> recipientPersons;
+//
+//    @OneToMany(mappedBy = "notificationByNotifId")
+//    private Set<NotificationRecipientRoles> recipientRoles;
 
     @OneToMany(mappedBy = "notificationByNotifId")
     private Set<NotificationViewers> viewers;

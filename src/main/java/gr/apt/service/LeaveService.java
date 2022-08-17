@@ -23,6 +23,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import static gr.apt.utils.LeaveUtils.getNumberOfRequestedLeaves;
+import static gr.apt.utils.LeaveUtils.getRemainingLeaves;
+
 @ApplicationScoped
 @Transactional
 public class LeaveService {
@@ -98,7 +101,7 @@ public class LeaveService {
                 Person person = personRepository.findById(entity.getPersonId());
                 if (person == null)
                     throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not exist");
-                if (person.getRemainingLeaves() < entity.getNumberOfRequestedLeaves()) {
+                if (getRemainingLeaves(person) < getNumberOfRequestedLeaves(entity)) {
                     throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
                 }
             }
@@ -120,6 +123,14 @@ public class LeaveService {
         if (entity != null) {
             if (entity.getApproved() == null) {
                 entity = mapper.DtoToEntity(dto);
+                if (entity.getType().equals(LeaveType.PAID_LEAVE)) {
+                    Person person = personRepository.findById(entity.getPersonId());
+                    if (person == null)
+                        throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not exist");
+                    if (getRemainingLeaves(person) < getNumberOfRequestedLeaves(entity)) {
+                        throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
+                    }
+                }
                 repository.persistAndFlush(entity);
 
                 //create notification
@@ -148,7 +159,7 @@ public class LeaveService {
         Leave entity = repository.findById(dto.getId());
         if (entity != null) {
             if (dto.getApproved().equals(YesOrNo.YES) && dto.getType().equals(LeaveType.PAID_LEAVE)) {
-                if (entity.getPersonByPersonId().getRemainingLeaves() < entity.getNumberOfRequestedLeaves()) {
+                if (getRemainingLeaves(entity.getPersonByPersonId()) < getNumberOfRequestedLeaves(entity)) {
                     throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
                 }
             }

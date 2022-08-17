@@ -21,6 +21,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
+import static gr.apt.utils.LeaveUtils.calculateTotalNumberOfLeaves;
+
 @ApplicationScoped
 @Transactional
 public class PersonService {
@@ -113,27 +115,5 @@ public class PersonService {
         }
     }
 
-    private Integer calculateTotalNumberOfLeaves(LocalDate dateOfEmployment) {
-        int leaves = 0;
-        long totalDays = ChronoUnit.DAYS.between(dateOfEmployment,LocalDate.of(LocalDate.now().getYear(), Month.DECEMBER, 31));//compareTo(dateOfEmployment);
-        if (totalDays > 25 * 365) {
-            leaves = 26;
-        } else if (totalDays > 10 * 365) {
-            leaves = 25;
-        } else if (totalDays > 2 * 365) {
-            leaves = 22;
-        } else if (totalDays >= 365) {
-            leaves = 21;
-        } else {
-            int workingDays = 0;
-            for (int i = dateOfEmployment.getDayOfMonth(); i <= dateOfEmployment.getMonth().maxLength(); i++) {
-                DayOfWeek day = LocalDate.of(dateOfEmployment.getYear(), dateOfEmployment.getMonth(), i).getDayOfWeek();
-                if (!(/*day.equals(DayOfWeek.SATURDAY) || */day.equals(DayOfWeek.SUNDAY))) {
-                    workingDays++;
-                }
-            }
-            leaves = (int) Math.round(((12 - dateOfEmployment.getMonthValue()) * 25 + workingDays) * (20. / 12. / 25.));
-        }
-        return leaves;
-    }
+
 }

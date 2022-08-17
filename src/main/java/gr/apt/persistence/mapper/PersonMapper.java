@@ -5,6 +5,7 @@ import gr.apt.persistence.dto.PersonDto;
 import gr.apt.persistence.dto.RoleDto;
 import gr.apt.persistence.entity.Person;
 import gr.apt.persistence.entity.PersonRoles;
+import gr.apt.utils.LeaveUtils;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "cdi",imports = LeaveUtils.class)
 public interface PersonMapper {
     PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
 
@@ -20,8 +21,8 @@ public interface PersonMapper {
 
     @Mappings({
             @Mapping(source = "personRolesById", target = "roles",qualifiedByName = "getRoles"),
-            @Mapping(target = "usedLeaves" , expression = "java(entity.getUsedLeaves())"),
-            @Mapping(target = "remainingLeaves" , expression = "java(entity.getRemainingLeaves())")
+            @Mapping(target = "usedLeaves" , expression = "java(LeaveUtils.getUsedLeaves(entity))"),
+            @Mapping(target = "remainingLeaves" , expression = "java(LeaveUtils.getRemainingLeaves(entity))")
     })
     PersonDto entityToDto(Person entity);
 

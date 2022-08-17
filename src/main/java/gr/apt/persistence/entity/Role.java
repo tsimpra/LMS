@@ -35,8 +35,4 @@ public class Role extends AbstractEntity {
     @NotNull
     private String role;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "roleByRoleId")
-    private Collection<PersonRoles> personRolesById;
-
 }

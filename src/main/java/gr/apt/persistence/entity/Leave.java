@@ -1,10 +1,10 @@
 package gr.apt.persistence.entity;
 
-import gr.apt.persistence.holiday.MobileHolidays;
-import gr.apt.persistence.holiday.PublicHolidays;
 import gr.apt.persistence.entity.superclass.AbstractEntity;
 import gr.apt.persistence.enumeration.LeaveType;
 import gr.apt.persistence.enumeration.YesOrNo;
+import gr.apt.persistence.holiday.MobileHolidays;
+import gr.apt.persistence.holiday.PublicHolidays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -68,24 +68,4 @@ public class Leave extends AbstractEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "id",updatable = false,insertable = false)
     private Person personByPersonId;
 
-    @Transient
-    private Integer numberOfRequestedLeaves;
-
-    public Integer getNumberOfRequestedLeaves() {
-        int daysCount = this.getEndDate().compareTo(this.getStartDate()) + 1;
-        int weekendsCount =0;
-        int publicHolidays =0;
-        for(int i=0;i<daysCount;i++){
-            DayOfWeek day = this.getStartDate().plusDays(i).getDayOfWeek();
-            if(day.equals(DayOfWeek.SATURDAY) || day.equals(DayOfWeek.SUNDAY)){
-                weekendsCount++;
-                continue;
-            }
-            if(PublicHolidays.getPublicHolidays().contains(this.getStartDate().plusDays(i)) ||
-                    MobileHolidays.getMobileHolidays().contains(this.getStartDate().plusDays(i))){
-                publicHolidays++;
-            }
-        }
-        return daysCount - weekendsCount - publicHolidays;
-    }
 }

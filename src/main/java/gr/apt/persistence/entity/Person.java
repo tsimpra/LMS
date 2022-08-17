@@ -77,22 +77,4 @@ public class Person extends AbstractEntity {
     @OneToMany(mappedBy = "personByPersonId")
     private Collection<PersonRoles> personRolesById;
 
-    public Integer getRemainingLeaves() {
-        return this.numberOfLeaves - this.getUsedLeaves();
-    }
-
-    public Integer getUsedLeaves() {
-        Integer used = 0;
-        if (!leavesById.isEmpty()) {
-            for (Leave leave : leavesById) {
-                if(leave.getApproved() != null && leave.getApproved().equals(YesOrNo.YES)) {
-                    if (leave.getType().equals(LeaveType.PAID_LEAVE)) {
-                        used = used + leave.getNumberOfRequestedLeaves();
-                    }
-                }
-            }
-        }
-        return used;
-    }
-
 }
