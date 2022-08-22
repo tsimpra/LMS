@@ -17,6 +17,7 @@
     <quarkus.platform.version>2.11.2.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <mapstruct.version>1.5.2.Final</mapstruct.version>
+    <kotlin.version>1.6.21</kotlin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -49,26 +50,30 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-jackson</artifactId>
+        <artifactId>quarkus-resteasy-jackson</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-postgresql</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-arc</artifactId>
-    </dependency>
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-jdbc-postgresql</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-arc</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-resteasy-reactive-kotlin</artifactId>
+      </dependency>
 
-    <!--************************JWT*************************-->
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-jwt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-jwt-build</artifactId>
-    </dependency>
+      <!--************************JWT*************************-->
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-smallrye-jwt</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-smallrye-jwt-build</artifactId>
+      </dependency>
 
     <!--************************SWAGGER*************************-->
     <dependency>
@@ -111,17 +116,45 @@
     </dependency>
   </dependencies>
   <build>
-    <plugins>
-      <plugin>
-        <groupId>${quarkus.platform.group-id}</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.platform.version}</version>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-              <goal>generate-code</goal>
+      <plugins>
+          <plugin>
+              <groupId>org.jetbrains.kotlin</groupId>
+              <artifactId>kotlin-maven-plugin</artifactId>
+              <version>${kotlin.version}</version>
+              <executions>
+                  <execution>
+                      <id>compile</id>
+                      <phase>process-sources</phase>
+                      <goals>
+                          <goal>compile</goal>
+                      </goals>
+                      <configuration>
+                          <sourceDirs>
+                              <!--                <source>target/generated-sources/annotations</source>-->
+                              <!--                <source>target/generated-sources/ksp</source>-->
+                              <source>src/main/java</source>
+                          </sourceDirs>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>test-compile</id>
+                      <phase>test-compile</phase>
+                      <goals>
+                          <goal>test-compile</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>${quarkus.platform.group-id}</groupId>
+              <artifactId>quarkus-maven-plugin</artifactId>
+              <version>${quarkus.platform.version}</version>
+              <extensions>true</extensions>
+              <executions>
+                  <execution>
+                      <goals>
+                          <goal>build</goal>
+                          <goal>generate-code</goal>
               <goal>generate-code-tests</goal>
             </goals>
           </execution>
