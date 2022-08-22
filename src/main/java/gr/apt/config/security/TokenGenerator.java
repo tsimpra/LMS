@@ -1,4 +1,4 @@
-package gr.apt.security;
+package gr.apt.config.security;
 
 import io.smallrye.jwt.build.Jwt;
 

@@ -9,8 +9,7 @@ import gr.apt.persistence.holiday.PublicHolidays;
 import gr.apt.persistence.holiday.RestHolidays;
 import gr.apt.repository.RestHolidaysRepository;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import javax.enterprise.inject.spi.CDI;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -21,17 +20,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static gr.apt.utils.CommonUtils.isNeitherNullNorEmpty;
 
-@ApplicationScoped
 public class LeaveUtils {
 
-    private static RestHolidaysRepository restHolidaysRepository;
-
-    @Inject
-    public LeaveUtils(RestHolidaysRepository restHolidaysRepository) {
-        LeaveUtils.restHolidaysRepository = restHolidaysRepository;
-    }
-
     public static Integer getNumberOfRequestedLeaves(Leave leave) {
+        RestHolidaysRepository restHolidaysRepository = CDI.current().select(RestHolidaysRepository.class).get();
         int daysCount = leave.getEndDate().compareTo(leave.getStartDate()) + 1;
         int weekendsCount = 0;
         int publicHolidays = 0;
@@ -50,9 +42,13 @@ public class LeaveUtils {
             }
             if(isNeitherNullNorEmpty(restHolidaysList)){
                 restHolidaysList.forEach(restHoliday -> {
-                    restHoliday.getStartDate().datesUntil(restHoliday.getEndDate())
-                            .forEach(innerDate ->{
-                                if(leaveDate.get().equals(innerDate)){
+//                    List<LocalDate> dates =
+                    //plus 1 day for to include end date
+                    restHoliday.getStartDate().datesUntil(restHoliday.getEndDate().plusDays(1))
+//                            .collect(Collectors.toList());
+//                    dates.stream()
+                            .forEach(innerDate -> {
+                                if (leaveDate.get().equals(innerDate)) {
                                     restHolidays.getAndIncrement();
                                 }
                             });

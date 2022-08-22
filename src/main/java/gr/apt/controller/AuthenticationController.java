@@ -1,11 +1,14 @@
 package gr.apt.controller;
 
+import gr.apt.config.security.AuthenticationDto;
+import gr.apt.config.security.TokenGenerator;
 import gr.apt.exception.LmsException;
-import gr.apt.security.AuthenticationDto;
-import gr.apt.security.TokenGenerator;
 
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 @Path("/auth")

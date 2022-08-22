@@ -158,9 +158,9 @@ public class LeaveService {
     public Boolean approve(ApproveLeaveDto dto) throws LmsException {
         Leave entity = repository.findById(dto.getId());
         if (entity != null) {
-            if (dto.getApproved().equals(YesOrNo.YES) && dto.getType().equals(LeaveType.PAID_LEAVE)) {
+            if (dto.getApproved().equals(YesOrNo.YES) && entity.getType().equals(LeaveType.PAID_LEAVE)) {
                 if (getRemainingLeaves(entity.getPersonByPersonId()) < getNumberOfRequestedLeaves(entity)) {
-                    throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
+                    throw new LmsException("Person with id:" + entity.getPersonId() + " does not have enough remaining days of leave");
                 }
             }
             entity.setApproved(dto.getApproved());
@@ -171,7 +171,7 @@ public class LeaveService {
             //create notification
             CreateNotificationDto notification = new CreateNotificationDto();
             notification.setContent("Your request have been updated as " + (dto.getApproved().equals(YesOrNo.YES) ? "approved" : "not approved"));
-            notification.setRecipientPersonId(dto.getPersonId().getId());
+            notification.setRecipientPersonId(entity.getPersonId());
             notification.setRecipientRoleIds(Set.of(Role.ROLE_ADMIN));
             notificationService.create(notification);
             return true;

@@ -3,7 +3,6 @@ package gr.apt.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import gr.apt.persistence.entity.superclass.AbstractEntity;
 import gr.apt.persistence.enumeration.Job;
-import gr.apt.persistence.enumeration.LeaveType;
 import gr.apt.persistence.enumeration.YesOrNo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +24,7 @@ import java.util.Collection;
 public class Person extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
-    @SequenceGenerator(name = "person_seq", sequenceName = "lms.lms_person_id_seq")
+    @SequenceGenerator(name = "person_seq", sequenceName = "lms.lms_person_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

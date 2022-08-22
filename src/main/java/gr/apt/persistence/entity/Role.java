@@ -1,6 +1,5 @@
 package gr.apt.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import gr.apt.persistence.entity.superclass.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -26,8 +23,8 @@ public class Role extends AbstractEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "roles_seq")
-    @SequenceGenerator(name = "roles_seq",sequenceName = "lms.lms_roles_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
+    @SequenceGenerator(name = "roles_seq", sequenceName = "lms.lms_roles_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

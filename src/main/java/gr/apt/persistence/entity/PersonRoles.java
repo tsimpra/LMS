@@ -19,8 +19,8 @@ import java.math.BigInteger;
 @Table(name = "person_roles", schema = "lms")
 public class PersonRoles extends AbstractEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "person_roles_seq")
-    @SequenceGenerator(name = "person_roles_seq",sequenceName = "lms.lms_person_roles_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_roles_seq")
+    @SequenceGenerator(name = "person_roles_seq", sequenceName = "lms.lms_person_roles_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

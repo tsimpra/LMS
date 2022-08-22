@@ -1,7 +1,10 @@
 package gr.apt.persistence.holiday;
 
 import gr.apt.persistence.entity.superclass.AbstractEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
@@ -17,7 +20,7 @@ import java.time.LocalDate;
 public class RestHolidays extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rest_holidays_seq")
-    @SequenceGenerator(name = "rest_holidays_seq", sequenceName = "lms.lms_rest_holidays_id_seq")
+    @SequenceGenerator(name = "rest_holidays_seq", sequenceName = "lms.lms_rest_holidays_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

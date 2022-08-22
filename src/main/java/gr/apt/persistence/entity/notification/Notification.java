@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.Set;
 
 @Getter
@@ -16,8 +14,8 @@ import java.util.Set;
 @Table(name = "notification", schema = "lms")
 public class Notification extends AbstractEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "notification_seq")
-    @SequenceGenerator(name = "notification_seq",sequenceName = "lms.lms_notification_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_seq")
+    @SequenceGenerator(name = "notification_seq", sequenceName = "lms.lms_notification_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

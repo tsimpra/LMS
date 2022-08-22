@@ -3,8 +3,6 @@ package gr.apt.persistence.entity;
 import gr.apt.persistence.entity.superclass.AbstractEntity;
 import gr.apt.persistence.enumeration.LeaveType;
 import gr.apt.persistence.enumeration.YesOrNo;
-import gr.apt.persistence.holiday.MobileHolidays;
-import gr.apt.persistence.holiday.PublicHolidays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +12,6 @@ import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @Getter
@@ -25,8 +22,8 @@ import java.time.LocalDate;
 @Table(name = "leave",schema = "lms")
 public class Leave extends AbstractEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "leave_seq")
-    @SequenceGenerator(name = "leave_seq",sequenceName = "lms.lms_leave_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leave_seq")
+    @SequenceGenerator(name = "leave_seq", sequenceName = "lms.lms_leave_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, precision = 0)
     private BigInteger id;
     @Basic

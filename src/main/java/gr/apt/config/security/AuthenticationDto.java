@@ -1,4 +1,4 @@
-package gr.apt.security;
+package gr.apt.config.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
