@@ -1,17 +1,12 @@
-package gr.apt.config.security;
+package gr.apt.config.security
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
+import javax.validation.constraints.NotNull
 
-import javax.validation.constraints.NotNull;
-
-@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthenticationDto {
-    @NotNull
-    private String username;
-    @NotNull
-    private String password;
-}
+data class AuthenticationDto(
+    var username: @NotNull String? = null,
+    var password: @NotNull String? = null
+)

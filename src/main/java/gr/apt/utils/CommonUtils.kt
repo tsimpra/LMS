@@ -1,13 +1,9 @@
-package gr.apt.utils;
+package gr.apt.utils
 
-import java.util.Collection;
+fun <T> Collection<T>?.isNeitherNullNorEmpty(): Boolean {
+    return this != null && !this.isEmpty()
+}
 
-public class CommonUtils {
-    public static <T> boolean isNeitherNullNorEmpty(Collection<T> collection) {
-        return collection != null && !collection.isEmpty();
-    }
-
-    public static boolean isNeitherNullNorBlank(String aString) {
-        return aString != null && !aString.isBlank();
-    }
+fun String?.isNeitherNullNorBlank(): Boolean {
+    return this != null && !this.isBlank()
 }

@@ -36,7 +36,7 @@ public interface PersonMapper {
     static Collection<RoleDto> getRoles(BigInteger personId){
         RoleRepository roleRepository = CDI.current().select(RoleRepository.class).get();
         if(roleRepository!=null) {
-            return RoleMapper.INSTANCE.entitiesToDtos(roleRepository.getPersonRoles(personId).list());
+            return RoleMapper.INSTANCE.entitiesToDtos(roleRepository.getPersonRoles(personId));
         }
         return null;
     }

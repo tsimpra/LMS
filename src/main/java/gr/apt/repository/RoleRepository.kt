@@ -8,6 +8,6 @@ import javax.enterprise.context.ApplicationScoped
 @ApplicationScoped
 class RoleRepository : PanacheRepositoryBase<Role?, BigInteger?> {
     fun getPersonRoles(id: BigInteger) =
-        find("select * from roles rol join person_roles pro on rol.id = pro.roleId where pro.personId = ?1", id)
+        list("select * from roles rol join person_roles pro on rol.id = pro.roleId where pro.personId = ?1", id)
 
 }

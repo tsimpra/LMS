@@ -1,19 +1,16 @@
-package gr.apt.config.security;
+package gr.apt.config.security
 
-import io.smallrye.jwt.build.Jwt;
-
-import javax.enterprise.context.ApplicationScoped;
-import java.util.Arrays;
-import java.util.HashSet;
+import io.smallrye.jwt.build.Jwt
+import java.util.*
+import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-public class TokenGenerator {
-
-    public String generateToken(String username) {
-        return Jwt.issuer("https://example.com/issuer")
-                //.upn("jdoe@quarkus.io")
-                .groups(new HashSet<>(Arrays.asList("User", "Admin")))
-                .claim("username", username)
-                .sign();
+class TokenGenerator {
+    fun generateToken(username: String?): String {
+        //TODO: make generate token work for real time service
+        return Jwt.issuer("https://example.com/issuer") //.upn("jdoe@quarkus.io")
+            .groups(HashSet(Arrays.asList("User", "Admin")))
+            .claim("username", username)
+            .sign()
     }
 }

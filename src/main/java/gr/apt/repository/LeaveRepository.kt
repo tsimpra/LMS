@@ -6,4 +6,8 @@ import java.math.BigInteger
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class LeaveRepository : PanacheRepositoryBase<Leave?, BigInteger?>
+class LeaveRepository : PanacheRepositoryBase<Leave?, BigInteger?> {
+
+    fun getPersonLeaves(id: BigInteger) =
+        list("select * from leaves where personId = ?1", id)
+}
