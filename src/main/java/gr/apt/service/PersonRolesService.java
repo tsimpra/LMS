@@ -1,8 +1,8 @@
 package gr.apt.service;
 
-import gr.apt.persistence.dto.PersonRolesDto;
+import gr.apt.dto.PersonRolesDto;
+import gr.apt.mapper.PersonRolesMapper;
 import gr.apt.persistence.entity.PersonRoles;
-import gr.apt.persistence.mapper.PersonRolesMapper;
 import gr.apt.repository.PersonRolesRepository;
 
 import javax.enterprise.context.ApplicationScoped;

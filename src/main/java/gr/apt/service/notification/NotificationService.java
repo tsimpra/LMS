@@ -1,16 +1,15 @@
 package gr.apt.service.notification;
 
+import gr.apt.dto.notification.CreateNotificationDto;
+import gr.apt.dto.notification.NotificationDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.CreateNotificationDto;
-import gr.apt.persistence.dto.NotificationDto;
-import gr.apt.persistence.dto.PersonDto;
+import gr.apt.mapper.NotificationMapper;
 import gr.apt.persistence.entity.Person;
 import gr.apt.persistence.entity.Role;
 import gr.apt.persistence.entity.notification.Notification;
 import gr.apt.persistence.entity.notification.NotificationRecipientPersons;
 import gr.apt.persistence.entity.notification.NotificationRecipientRoles;
 import gr.apt.persistence.entity.notification.NotificationViewers;
-import gr.apt.persistence.mapper.NotificationMapper;
 import gr.apt.repository.PersonRepository;
 import gr.apt.repository.RoleRepository;
 import gr.apt.repository.notification.NotificationRecipientPersonsRepository;

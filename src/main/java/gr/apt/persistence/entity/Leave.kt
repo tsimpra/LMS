@@ -53,11 +53,11 @@ open class Leave : AbstractEntity() {
     @Column(name = "person_id", nullable = false, precision = 0)
     open var personId: @NotNull BigInteger? = null
 
-    @ManyToOne
-    @JoinColumn(name = "approved_by", referencedColumnName = "id", updatable = false, insertable = false)
-    open var personByApprovedBy: Person? = null
-
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id", updatable = false, insertable = false)
-    open var personByPersonId: Person? = null
+//    @ManyToOne
+//    @JoinColumn(name = "approved_by", referencedColumnName = "id", updatable = false, insertable = false)
+//    open var personByApprovedBy: Person? = null
+//
+//    @ManyToOne
+//    @JoinColumn(name = "person_id", referencedColumnName = "id", updatable = false, insertable = false)
+//    open var personByPersonId: Person? = null
 }

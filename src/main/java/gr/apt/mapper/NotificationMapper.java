@@ -1,7 +1,7 @@
-package gr.apt.persistence.mapper;
+package gr.apt.mapper;
 
-import gr.apt.persistence.dto.CreateNotificationDto;
-import gr.apt.persistence.dto.NotificationDto;
+import gr.apt.dto.notification.CreateNotificationDto;
+import gr.apt.dto.notification.NotificationDto;
 import gr.apt.persistence.entity.notification.Notification;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

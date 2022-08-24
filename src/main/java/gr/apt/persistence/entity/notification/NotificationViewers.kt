@@ -11,7 +11,10 @@ open class NotificationViewers(
         name = "person_id",
         nullable = false,
         precision = 0
-    ) @field:Basic open var personId: BigInteger?, @field:Column(
+    )
+    @field:Basic
+    open var personId: BigInteger?,
+    @field:Column(
         name = "notif_id",
         nullable = false,
         precision = 0
@@ -29,7 +32,7 @@ open class NotificationViewers(
     @Column(name = "id", nullable = false, precision = 0)
     open var id: BigInteger? = null
 
-    @ManyToOne
-    @JoinColumn(name = "notif_id", referencedColumnName = "id", insertable = false, updatable = false)
-    open var notificationByNotifId: Notification? = null
+//    @ManyToOne
+//    @JoinColumn(name = "notif_id", referencedColumnName = "id", insertable = false, updatable = false)
+//    open var notificationByNotifId: Notification? = null
 }

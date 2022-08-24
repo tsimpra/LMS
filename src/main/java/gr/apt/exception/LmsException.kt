@@ -1,17 +1,13 @@
-package gr.apt.exception;
+package gr.apt.exception
 
-import java.io.Serializable;
+import java.io.Serializable
 
-public class LmsException extends Exception implements Serializable {
-    private static final long serialVersionUID = 1L;
+class LmsException : Exception, Serializable {
+    constructor() : super() {}
+    constructor(msg: String) : super(msg) {}
+    constructor(msg: String, e: Exception) : super(msg, e) {}
 
-    public LmsException() {
-        super();
-    }
-    public LmsException(String msg)   {
-        super(msg);
-    }
-    public LmsException(String msg, Exception e)  {
-        super(msg, e);
+    companion object {
+        private const val serialVersionUID = 1L
     }
 }

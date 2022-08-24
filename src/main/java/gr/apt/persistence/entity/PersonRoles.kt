@@ -1,6 +1,5 @@
 package gr.apt.persistence.entity
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import gr.apt.persistence.entity.superclass.AbstractEntity
 import java.math.BigInteger
 import javax.persistence.*
@@ -23,18 +22,18 @@ open class PersonRoles : AbstractEntity() {
     @Column(name = "person_id", nullable = false, precision = 0)
     open var personId: @NotNull BigInteger? = null
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    open var roleByRoleId: Role? = null
+//    @ManyToOne
+//    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+//    open var roleByRoleId: Role? = null
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(
-        name = "person_id",
-        referencedColumnName = "id",
-        nullable = false,
-        insertable = false,
-        updatable = false
-    )
-    open var personByPersonId: Person? = null
+//    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(
+//        name = "person_id",
+//        referencedColumnName = "id",
+//        nullable = false,
+//        insertable = false,
+//        updatable = false
+//    )
+//    open var personByPersonId: Person? = null
 }

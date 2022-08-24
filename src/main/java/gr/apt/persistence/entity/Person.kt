@@ -1,9 +1,9 @@
 package gr.apt.persistence.entity
 
-import com.fasterxml.jackson.annotation.JsonBackReference
 import gr.apt.persistence.entity.superclass.AbstractEntity
 import gr.apt.persistence.enumeration.Job
 import gr.apt.persistence.enumeration.YesOrNo
+import org.hibernate.annotations.Where
 import java.math.BigInteger
 import java.time.LocalDate
 import javax.persistence.*
@@ -58,12 +58,13 @@ open class Person : AbstractEntity() {
     @Basic
     @Enumerated
     @Column(name = "is_active", nullable = true)
+    @Where(clause = "isActive = 1")
     open var isActive: YesOrNo? = null
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "personByPersonId", targetEntity = Leave::class)
-    open var leavesById: Collection<Leave>? = null
-
-    @OneToMany(mappedBy = "personByPersonId", targetEntity = PersonRoles::class)
-    open var personRolesById: Collection<PersonRoles>? = null
+//    @JsonBackReference
+//    @OneToMany(mappedBy = "personByPersonId")
+//    open val leavesById: Collection<Leave>? = mutableListOf()
+//
+//    @OneToMany(mappedBy = "personByPersonId")
+//    open val personRolesById: Collection<PersonRoles>? = mutableListOf()
 }

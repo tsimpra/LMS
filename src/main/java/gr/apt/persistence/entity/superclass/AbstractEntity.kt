@@ -5,10 +5,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection
 import java.io.Serializable
 import java.math.BigInteger
 import java.time.LocalDateTime
-import javax.persistence.Basic
-import javax.persistence.Column
-import javax.persistence.MappedSuperclass
-import javax.persistence.PrePersist
+import javax.persistence.*
 
 @MappedSuperclass
 @RegisterForReflection
@@ -35,6 +32,12 @@ open class AbstractEntity : PanacheEntityBase(), Serializable {
             created = LocalDateTime.now()
             createdBy = BigInteger.ONE
         }
+        updated = LocalDateTime.now()
+        updatedBy = BigInteger.ONE
+    }
+
+    @PreUpdate
+    private fun preUpdate(){
         updated = LocalDateTime.now()
         updatedBy = BigInteger.ONE
     }

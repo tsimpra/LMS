@@ -26,7 +26,7 @@ open class NotificationRecipientPersons(
     @Column(name = "id", nullable = false, precision = 0)
     open var id: BigInteger? = null
 
-    @ManyToOne
-    @JoinColumn(name = "notif_id", referencedColumnName = "id", insertable = false, updatable = false)
-    open var notificationByNotifId: Notification? = null
+//    @ManyToOne
+//    @JoinColumn(name = "notif_id", referencedColumnName = "id", insertable = false, updatable = false)
+//    open var notificationByNotifId: Notification? = null
 }

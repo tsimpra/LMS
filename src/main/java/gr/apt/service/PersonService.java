@@ -1,11 +1,11 @@
 package gr.apt.service;
 
+import gr.apt.dto.notification.CreateNotificationDto;
+import gr.apt.dto.person.PersonDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.CreateNotificationDto;
-import gr.apt.persistence.dto.PersonDto;
+import gr.apt.mapper.PersonMapper;
 import gr.apt.persistence.entity.Person;
 import gr.apt.persistence.entity.Role;
-import gr.apt.persistence.mapper.PersonMapper;
 import gr.apt.repository.PersonRepository;
 import gr.apt.service.notification.NotificationService;
 import io.quarkus.panache.common.Page;
@@ -14,10 +14,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 

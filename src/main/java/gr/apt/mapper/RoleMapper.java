@@ -1,6 +1,6 @@
-package gr.apt.persistence.mapper;
+package gr.apt.mapper;
 
-import gr.apt.persistence.dto.RoleDto;
+import gr.apt.dto.RoleDto;
 import gr.apt.persistence.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

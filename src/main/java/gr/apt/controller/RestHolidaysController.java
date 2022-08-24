@@ -1,6 +1,6 @@
 package gr.apt.controller;
 
-import gr.apt.persistence.dto.RestHolidaysDto;
+import gr.apt.dto.RestHolidaysDto;
 import gr.apt.service.RestHolidaysService;
 
 import javax.inject.Inject;

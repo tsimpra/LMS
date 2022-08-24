@@ -1,7 +1,7 @@
 package gr.apt.controller;
 
+import gr.apt.dto.notification.NotificationDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.NotificationDto;
 import gr.apt.service.notification.NotificationService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 

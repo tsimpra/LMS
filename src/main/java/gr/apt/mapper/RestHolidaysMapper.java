@@ -1,6 +1,6 @@
-package gr.apt.persistence.mapper;
+package gr.apt.mapper;
 
-import gr.apt.persistence.dto.RestHolidaysDto;
+import gr.apt.dto.RestHolidaysDto;
 import gr.apt.persistence.holiday.RestHolidays;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -17,6 +17,6 @@ open class Notification : AbstractEntity() {
     @Column(name = "content", nullable = false, length = 4000)
     open var content: String? = null
 
-    @OneToMany(mappedBy = "notificationByNotifId", targetEntity = NotificationViewers::class)
-    open var viewers: Set<NotificationViewers>? = null
+//    @OneToMany(mappedBy = "notificationByNotifId")
+//    open val viewers: Set<NotificationViewers>? = null
 }

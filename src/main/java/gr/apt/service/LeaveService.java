@@ -1,15 +1,15 @@
 package gr.apt.service;
 
+import gr.apt.dto.leave.ApproveLeaveDto;
+import gr.apt.dto.leave.LeaveDto;
+import gr.apt.dto.notification.CreateNotificationDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.ApproveLeaveDto;
-import gr.apt.persistence.dto.CreateNotificationDto;
-import gr.apt.persistence.dto.LeaveDto;
+import gr.apt.mapper.LeaveMapper;
 import gr.apt.persistence.entity.Leave;
 import gr.apt.persistence.entity.Person;
 import gr.apt.persistence.entity.Role;
 import gr.apt.persistence.enumeration.LeaveType;
 import gr.apt.persistence.enumeration.YesOrNo;
-import gr.apt.persistence.mapper.LeaveMapper;
 import gr.apt.repository.LeaveRepository;
 import gr.apt.repository.PersonRepository;
 import gr.apt.service.notification.NotificationService;

@@ -1,8 +1,8 @@
 package gr.apt.controller;
 
+import gr.apt.dto.leave.ApproveLeaveDto;
+import gr.apt.dto.leave.LeaveDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.ApproveLeaveDto;
-import gr.apt.persistence.dto.LeaveDto;
 import gr.apt.service.LeaveService;
 
 import javax.inject.Inject;

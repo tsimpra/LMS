@@ -1,6 +1,6 @@
 package gr.apt.controller;
 
-import gr.apt.persistence.dto.PersonRolesDto;
+import gr.apt.dto.PersonRolesDto;
 import gr.apt.service.PersonRolesService;
 
 import javax.inject.Inject;

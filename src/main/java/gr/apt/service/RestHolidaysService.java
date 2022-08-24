@@ -1,8 +1,8 @@
 package gr.apt.service;
 
-import gr.apt.persistence.dto.RestHolidaysDto;
+import gr.apt.dto.RestHolidaysDto;
+import gr.apt.mapper.RestHolidaysMapper;
 import gr.apt.persistence.holiday.RestHolidays;
-import gr.apt.persistence.mapper.RestHolidaysMapper;
 import gr.apt.repository.RestHolidaysRepository;
 
 import javax.enterprise.context.ApplicationScoped;

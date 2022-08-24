@@ -1,7 +1,7 @@
 package gr.apt.controller;
 
+import gr.apt.dto.person.PersonDto;
 import gr.apt.exception.LmsException;
-import gr.apt.persistence.dto.PersonDto;
 import gr.apt.service.PersonService;
 
 import javax.inject.Inject;

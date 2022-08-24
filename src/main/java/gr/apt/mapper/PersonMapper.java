@@ -1,15 +1,19 @@
-package gr.apt.persistence.mapper;
+package gr.apt.mapper;
 
-import gr.apt.persistence.dto.PersonBasicInfoDto;
-import gr.apt.persistence.dto.PersonDto;
-import gr.apt.persistence.dto.RoleDto;
+import gr.apt.dto.RoleDto;
+import gr.apt.dto.person.PersonBasicInfoDto;
+import gr.apt.dto.person.PersonDto;
 import gr.apt.persistence.entity.Person;
-import gr.apt.persistence.entity.PersonRoles;
+import gr.apt.repository.RoleRepository;
 import gr.apt.utils.LeaveUtils;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
+import javax.enterprise.inject.spi.CDI;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +24,7 @@ public interface PersonMapper {
     Person DtoToEntity(PersonDto dto);
 
     @Mappings({
-            @Mapping(source = "personRolesById", target = "roles",qualifiedByName = "getRoles"),
+            @Mapping(source = "id", target = "roles",qualifiedByName = "getRoles"),
             @Mapping(target = "usedLeaves" , expression = "java(LeaveUtils.getUsedLeaves(entity))"),
             @Mapping(target = "remainingLeaves" , expression = "java(LeaveUtils.getRemainingLeaves(entity))")
     })
@@ -29,12 +33,12 @@ public interface PersonMapper {
     List<PersonDto> entitiesToDtos(List<Person> entities);
 
     @Named("getRoles")
-    static Collection<RoleDto> getRoles(Collection<PersonRoles> personRoles){
-        Collection<RoleDto> roles = new ArrayList<>();
-        personRoles.forEach(personRole ->
-            roles.add( RoleMapper.INSTANCE.entityToDto(personRole.getRoleByRoleId()))
-        );
-        return roles;
+    static Collection<RoleDto> getRoles(BigInteger personId){
+        RoleRepository roleRepository = CDI.current().select(RoleRepository.class).get();
+        if(roleRepository!=null) {
+            return RoleMapper.INSTANCE.entitiesToDtos(roleRepository.getPersonRoles(personId).list());
+        }
+        return null;
     }
 
     PersonBasicInfoDto entityToBasicDto(Person entity);
