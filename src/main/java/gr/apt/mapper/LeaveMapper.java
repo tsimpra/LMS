@@ -1,6 +1,5 @@
 package gr.apt.mapper;
 
-import gr.apt.dto.leave.ApproveLeaveDto;
 import gr.apt.dto.leave.LeaveDto;
 import gr.apt.dto.person.PersonBasicInfoDto;
 import gr.apt.persistence.entity.Leave;
@@ -21,9 +20,9 @@ public interface LeaveMapper {
     @Mappings({
             @Mapping(source = "approvedBy", target = "approvedBy", qualifiedByName = "getApprovedByPersonInfo")
     })
-    ApproveLeaveDto entityToDto(Leave entity);
+    LeaveDto entityToDto(Leave entity);
 
-    List<ApproveLeaveDto> entitiesToDtos(List<Leave> entities);
+    List<LeaveDto> entitiesToDtos(List<Leave> entities);
 
     @Named("getApprovedByPersonInfo")
     static PersonBasicInfoDto getApprovedByPersonInfo(BigInteger id) {

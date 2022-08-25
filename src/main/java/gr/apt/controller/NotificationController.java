@@ -22,17 +22,14 @@ public class NotificationController {
     @GET
     @Path("/list")
     public Response findAll(@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException {
-        List list = service.findAll(jwt.getClaim("userId"), index, size);
-        if (list != null) {
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+        List<NotificationDto> list = service.findAll(jwt.getClaim("userId"), index, size);
+        return Response.ok(list).build();
     }
 
     @POST
     @Path("/read-list")
     @Consumes("application/json")
-    public Response readAll(List<NotificationDto> dtos) throws LmsException {
+    public Response readAll(List<BigInteger> dtos) throws LmsException {
         service.readAll(jwt.getClaim("userId"), dtos);
         return Response.ok().build();
     }

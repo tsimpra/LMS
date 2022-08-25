@@ -1,149 +1,167 @@
-package gr.apt.service.notification;
+package gr.apt.service.notification
 
-import gr.apt.dto.notification.CreateNotificationDto;
-import gr.apt.dto.notification.NotificationDto;
-import gr.apt.exception.LmsException;
-import gr.apt.mapper.NotificationMapper;
-import gr.apt.persistence.entity.Person;
-import gr.apt.persistence.entity.Role;
-import gr.apt.persistence.entity.notification.Notification;
-import gr.apt.persistence.entity.notification.NotificationRecipientPersons;
-import gr.apt.persistence.entity.notification.NotificationRecipientRoles;
-import gr.apt.persistence.entity.notification.NotificationViewers;
-import gr.apt.repository.PersonRepository;
-import gr.apt.repository.RoleRepository;
-import gr.apt.repository.notification.NotificationRecipientPersonsRepository;
-import gr.apt.repository.notification.NotificationRecipientRolesRepository;
-import gr.apt.repository.notification.NotificationRepository;
-import gr.apt.repository.notification.NotificationViewersRepository;
-import io.quarkus.panache.common.Page;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import java.math.BigInteger;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
+import gr.apt.dto.notification.CreateNotificationDto
+import gr.apt.dto.notification.NotificationDto
+import gr.apt.exception.LmsException
+import gr.apt.mapper.NotificationMapper
+import gr.apt.persistence.entity.Role
+import gr.apt.persistence.entity.notification.Notification
+import gr.apt.persistence.entity.notification.NotificationRecipientPersons
+import gr.apt.persistence.entity.notification.NotificationRecipientRoles
+import gr.apt.persistence.entity.notification.NotificationViewers
+import gr.apt.repository.PersonRepository
+import gr.apt.repository.PersonRolesRepository
+import gr.apt.repository.RoleRepository
+import gr.apt.repository.notification.NotificationRecipientPersonsRepository
+import gr.apt.repository.notification.NotificationRecipientRolesRepository
+import gr.apt.repository.notification.NotificationRepository
+import gr.apt.repository.notification.NotificationViewersRepository
+import gr.apt.utils.isNeitherNullNorEmpty
+import io.quarkus.panache.common.Page
+import java.math.BigInteger
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
+import javax.transaction.Transactional
 
 @ApplicationScoped
 @Transactional
-public class NotificationService {
-    @Inject
-    NotificationRepository repository;
-    @Inject
-    NotificationRecipientPersonsRepository recipientPersonsRepository;
-    @Inject
-    NotificationRecipientRolesRepository recipientRolesRepository;
-    @Inject
-    NotificationViewersRepository viewersRepository;
-    @Inject
-    PersonRepository personRepository;
-    @Inject
-    RoleRepository roleRepository;
-    @Inject
-    NotificationMapper mapper;
+class NotificationService {
+    @get:Inject
+    lateinit var repository: NotificationRepository
 
-    public List<NotificationDto> findAll(BigInteger personId, Integer index, Integer size) throws LmsException {
-        try {
-            Set<BigInteger> roleIds = new HashSet<>();
-            Set<BigInteger> notifIds = new HashSet<>();
-            Person person = personRepository.findById(personId);
-            person.getPersonRolesById().forEach(role -> roleIds.add(role.getRoleId()));
-            List<NotificationRecipientRoles> recipientRoles = recipientRolesRepository.find("roleId", roleIds).list();
-            if (recipientRoles != null && !recipientRoles.isEmpty()) {
-                recipientRoles.forEach(entry -> notifIds.add(entry.getNotifId()));
-            }
-            List<NotificationRecipientPersons> recipientPersons = recipientPersonsRepository.find("personId", person.getId()).list();
-            if (recipientPersons != null && !recipientPersons.isEmpty()) {
-                recipientPersons.forEach(entry -> notifIds.add(entry.getNotifId()));
-            }
+    @get:Inject
+    lateinit var recipientPersonsRepository: NotificationRecipientPersonsRepository
+
+    @get:Inject
+    lateinit var recipientRolesRepository: NotificationRecipientRolesRepository
+
+    @get:Inject
+    lateinit var viewersRepository: NotificationViewersRepository
+
+    @get:Inject
+    lateinit var personRepository: PersonRepository
+
+    @get:Inject
+    lateinit var roleRepository: RoleRepository
+
+    @get:Inject
+    lateinit var personRoleRepository: PersonRolesRepository
+
+    @Inject
+    lateinit var mapper: NotificationMapper
+
+    @Throws(LmsException::class)
+    fun findAll(personId: BigInteger, index: Int?, size: Int?): List<NotificationDto> {
+        return try {
+            val person =
+                personRepository.findById(personId) ?: throw LmsException("Person with id:$personId does not exist")
+            val roleIds: Set<BigInteger> = personRoleRepository.getRoleIdsByPersonId(personId).toSet()
+//            val notifIds: MutableSet<BigInteger?> = HashSet()
+//            val recipientRoles = recipientRolesRepository.list("roleId", roleIds).filterNotNull()
+//            if (recipientRoles.isNeitherNullNorEmpty()) {
+//                recipientRoles.forEach { entry -> notifIds.add(entry.notifId) }
+//            }
+//            val recipientPersons =
+//                recipientPersonsRepository.list("personId", person.id).filterNotNull()
+//            if (recipientPersons.isNeitherNullNorEmpty()) {
+//                recipientPersons.forEach { entry -> notifIds.add(entry.notifId) }
+//            }
+            val notificationsByPersonIdAndRoleIds = repository.getNotificationsByPersonIdAndRoleIds(roleIds, personId)
             if (index != null && size != null) {
-                Page page = Page.of(index, size);
-                return mapper.entitiesToDtos(repository.find("id", notifIds).page(page).list());
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(notificationsByPersonIdAndRoleIds.page<Notification>(page).list())
             }
-            return mapper.entitiesToDtos(repository.find("id", notifIds).list());
-        } catch (Exception ex) {
-            throw new LmsException(ex.getMessage());
+            mapper.entitiesToDtos(notificationsByPersonIdAndRoleIds.list())
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
-    public void readAll(BigInteger personId, List<NotificationDto> dtos) throws LmsException {
+    @Throws(LmsException::class)
+    fun readAll(personId: BigInteger?, ids: List<BigInteger>) {
         try {
-            if (dtos != null && !dtos.isEmpty()) {
-                dtos.forEach(dto -> {
-                    try {
-                        read(personId, dto.getId());
-                    } catch (LmsException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-        } catch (Exception ex) {
-            throw new LmsException(ex.getMessage());
-        }
-    }
-
-    public NotificationDto read(BigInteger personId, BigInteger id) throws LmsException {
-        try {
-            Notification notification = repository.findById(id);
-            AtomicReference<Boolean> isRead = new AtomicReference<>(false);
-            notification.getViewers().forEach(viewer -> {
-                if (viewer.getPersonId().equals(personId)) {
-                    isRead.set(true);
+            if (ids.isNeitherNullNorEmpty()) {
+                ids.forEach { id ->
+                    read(personId, id)
                 }
-            });
-            if (!isRead.get()) {
-                viewersRepository.persist(new NotificationViewers(personId, id));
             }
-            return mapper.entityToDto(notification);
-        } catch (Exception ex) {
-            throw new LmsException(ex.getMessage());
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
-    public Boolean create(CreateNotificationDto dto) throws LmsException {
-        try {
-            Notification entity = mapper.DtoToEntity(dto);
-            repository.persistAndFlush(entity);
-            repository.getEntityManager().refresh(entity);
-            if (dto.getRecipientPersonId() != null) {
-                recipientPersonsRepository.persist(new NotificationRecipientPersons(dto.getRecipientPersonId(), entity.getId()));
+    @Throws(LmsException::class)
+    fun read(personId: BigInteger?, id: BigInteger?): Boolean {
+        return try {
+            val notification = repository.findById(id) ?: throw LmsException("Notification with id:$id does not exist")
+            var isRead = false
+            //TODO: as sequence filter and any
+            viewersRepository.list("notifId", notification.id).filterNotNull().forEach { viewer ->
+                if (viewer.personId == personId) {
+                    isRead = true
+                }
             }
-            if (dto.getRecipientRoleIds() != null && !dto.getRecipientRoleIds().isEmpty()) {
-                dto.getRecipientRoleIds().forEach(roleId -> {
-                    recipientRolesRepository.persist(new NotificationRecipientRoles(roleId, entity.getId()));
-                });
+            if (!isRead) {
+                viewersRepository.persist(NotificationViewers(personId, id))
             }
-            return true;
-        } catch (Exception ex) {
-            throw new LmsException(ex.getMessage());
+            true
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
-    public Boolean createGeneralNotification(NotificationDto dto) throws LmsException {
-        try {
-            Notification entity = mapper.DtoToEntity(dto);
-            repository.persistAndFlush(entity);
-            repository.getEntityManager().refresh(entity);
-            List<Role> roles = roleRepository.listAll();
-            roles.forEach(role -> {
-                recipientRolesRepository.persist(new NotificationRecipientRoles(role.getId(), entity.getId()));
-            });
-            return true;
-        } catch (Exception ex) {
-            throw new LmsException(ex.getMessage());
+    @Throws(LmsException::class)
+    fun create(dto: CreateNotificationDto): Boolean {
+        return try {
+            val entity = mapper.DtoToEntity(dto)
+            repository.persistAndFlush(entity)
+            //repository.entityManager.refresh(entity)
+            if (dto.recipientPersonId != null) {
+                recipientPersonsRepository.persist(NotificationRecipientPersons(dto.recipientPersonId, entity.id))
+            }
+            if (dto.recipientRoleIds.isNeitherNullNorEmpty()) {
+                dto.recipientRoleIds!!.forEach { roleId ->
+                    recipientRolesRepository.persist(
+                        NotificationRecipientRoles(
+                            roleId,
+                            entity.id
+                        )
+                    )
+                }
+            }
+            true
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
+    @Throws(LmsException::class)
+    fun createGeneralNotification(dto: NotificationDto?): Boolean {
+        return try {
+            val entity = mapper.DtoToEntity(dto)
+            repository.persistAndFlush(entity)
+            //repository.entityManager.refresh(entity)
+            val roles = roleRepository.listAll().filterNotNull()
+            roles.forEach { role: Role ->
+                recipientRolesRepository.persist(
+                    NotificationRecipientRoles(
+                        role.id,
+                        entity.id
+                    )
+                )
+            }
+            true
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
+        }
+    }
 
-//    public Boolean delete(NotificationDto dto) {
-//        Notification entity = repository.findById(dto.getId());
-//        if (entity != null) {
-//            repository.delete(entity);
-//            return true;
-//        }
-//        return false;
-//    }
+    //    public Boolean delete(NotificationDto dto) {
+    //        Notification entity = repository.findById(dto.getId());
+    //        if (entity != null) {
+    //            repository.delete(entity);
+    //            return true;
+    //        }
+    //        return false;
+    //    }
 }

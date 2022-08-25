@@ -17,22 +17,20 @@ import javax.enterprise.inject.spi.CDI
 
 
 fun Leave.getNumberOfRequestedLeaves(): Int {
-    if (this.startDate == null || this.endDate == null)
-        throw LmsException(
-            "Leave with id ${this.id} has null value on start date and/or end date)"
-        )
+    val startD = this.startDate ?: throw LmsException("Leave with id ${this.id} has null value on start date")
+    val endD = this.endDate ?: throw LmsException("Leave with id ${this.id} has null value on end date")
     val restHolidaysRepository = CDI.current().select<RestHolidaysRepository>(
         RestHolidaysRepository::class.java
     ).get()
-    val daysCount = this.endDate?.compareTo(this.startDate)?.plus(1) ?: 0
+    val daysCount = endD.compareTo(startD).plus(1)
     var weekendsCount = 0
     var publicHolidays = 0
     var restHolidays = 0
     val restHolidaysList =
-        restHolidaysRepository.list("startDate >= ?1 and endDate <= ?2", this.startDate, this.endDate).filterNotNull()
+        restHolidaysRepository.list("startDate >= ?1 and endDate <= ?2", startD, endD).filterNotNull()
     for (i in 0 until daysCount) {
-        val day: DayOfWeek? = this.startDate!!.plusDays(i.toLong())?.getDayOfWeek()
-        val leaveDate = this.startDate!!.plusDays(i.toLong())
+        val day: DayOfWeek? = startD.plusDays(i.toLong())?.getDayOfWeek()
+        val leaveDate = startD.plusDays(i.toLong())
         if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
             weekendsCount++
             continue
@@ -44,10 +42,11 @@ fun Leave.getNumberOfRequestedLeaves(): Int {
         }
         if (restHolidaysList.isNeitherNullNorEmpty()) {
             restHolidaysList.forEach { restHoliday ->
-                if (restHoliday.startDate == null) throw LmsException("RestHoliday with id ${restHoliday.id} has null start date")
+                val restStartD = restHoliday.startDate
+                    ?: throw LmsException("RestHoliday with id ${restHoliday.id} has null start date")
                 //plus 1 day in order to include end date. if end date is null, and rest day counts only for a day, then get start date and add 1 day also for same reason.
-                restHoliday.startDate!!.datesUntil(
-                    restHoliday.endDate?.plusDays(1) ?: restHoliday.startDate!!.plusDays(1)
+                restStartD.datesUntil(
+                    restHoliday.endDate?.plusDays(1) ?: restStartD.plusDays(1)
                 )
                     .forEach { innerDate ->
                         if (leaveDate == innerDate) {

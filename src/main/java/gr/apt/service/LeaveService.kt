@@ -1,183 +1,197 @@
-package gr.apt.service;
+package gr.apt.service
 
-import gr.apt.dto.leave.ApproveLeaveDto;
-import gr.apt.dto.leave.LeaveDto;
-import gr.apt.dto.notification.CreateNotificationDto;
-import gr.apt.exception.LmsException;
-import gr.apt.mapper.LeaveMapper;
-import gr.apt.persistence.entity.Leave;
-import gr.apt.persistence.entity.Person;
-import gr.apt.persistence.entity.Role;
-import gr.apt.persistence.enumeration.LeaveType;
-import gr.apt.persistence.enumeration.YesOrNo;
-import gr.apt.repository.LeaveRepository;
-import gr.apt.repository.PersonRepository;
-import gr.apt.service.notification.NotificationService;
-import io.quarkus.panache.common.Page;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import static gr.apt.utils.LeaveUtils.getNumberOfRequestedLeaves;
-import static gr.apt.utils.LeaveUtils.getRemainingLeaves;
+import gr.apt.dto.leave.ApproveLeaveDto
+import gr.apt.dto.leave.LeaveDto
+import gr.apt.dto.notification.CreateNotificationDto
+import gr.apt.exception.LmsException
+import gr.apt.mapper.LeaveMapper
+import gr.apt.persistence.entity.Leave
+import gr.apt.persistence.entity.Person
+import gr.apt.persistence.entity.Role
+import gr.apt.persistence.enumeration.LeaveType
+import gr.apt.persistence.enumeration.YesOrNo
+import gr.apt.repository.LeaveRepository
+import gr.apt.repository.PersonRepository
+import gr.apt.service.notification.NotificationService
+import gr.apt.utils.getNumberOfRequestedLeaves
+import gr.apt.utils.getRemainingLeaves
+import io.quarkus.panache.common.Page
+import java.math.BigInteger
+import java.time.LocalDate
+import javax.enterprise.context.ApplicationScoped
+import javax.inject.Inject
+import javax.transaction.Transactional
 
 @ApplicationScoped
 @Transactional
-public class LeaveService {
+class LeaveService {
+    @get:Inject
+    lateinit var repository: LeaveRepository
+
+    @get:Inject
+    lateinit var personRepository: PersonRepository
+
     @Inject
-    LeaveRepository repository;
+    lateinit var notificationService: NotificationService
+
     @Inject
-    PersonRepository personRepository;
-    @Inject
-    NotificationService notificationService;
-    @Inject
-    LeaveMapper mapper;
+    lateinit var mapper: LeaveMapper
 
-    public List<ApproveLeaveDto> findAll(Integer index, Integer size) throws LmsException {
-        try {
+    @Throws(LmsException::class)
+    fun findAll(index: Int?, size: Int?): List<LeaveDto> {
+        return try {
             if (index != null && size != null) {
-                Page page = Page.of(index, size);
-                return mapper.entitiesToDtos(repository.findAll().page(page).list());
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.findAll().page<Leave>(page).list<Leave>())
             }
-            return mapper.entitiesToDtos(repository.listAll());
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred :" + ex.getMessage());
+            mapper.entitiesToDtos(repository.listAll())
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred :${ex.message}")
         }
     }
 
-    public List<ApproveLeaveDto> findAllByPersonId(BigInteger personId, Integer index, Integer size) throws LmsException {
-        try {
+    @Throws(LmsException::class)
+    fun findAllByPersonId(personId: BigInteger?, index: Int?, size: Int?): List<LeaveDto> {
+        return try {
             if (index != null && size != null) {
-                Page page = Page.of(index, size);
-                return mapper.entitiesToDtos(repository.find("personId", personId).page(page).list());
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.find("personId", personId).page<Leave>(page).list())
             }
-            return mapper.entitiesToDtos(repository.list("personId", personId));
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred :" + ex.getMessage());
+            mapper.entitiesToDtos(repository.list("personId", personId))
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred :${ex.message}")
         }
     }
 
-    public List<ApproveLeaveDto> findAllPending(Integer index, Integer size) throws LmsException {
-        try {
+    @Throws(LmsException::class)
+    fun findAllPending(index: Int?, size: Int?): List<LeaveDto> {
+        return try {
             if (index != null && size != null) {
-                Page page = Page.of(index, size);
-                return mapper.entitiesToDtos(repository.find("approved is null").page(page).list());
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.find("approved is null").page<Leave>(page).list())
             }
-            return mapper.entitiesToDtos(repository.list("approved is null"));
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred :" + ex.getMessage());
+            mapper.entitiesToDtos(repository.list("approved is null"))
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred :${ex.message}")
         }
     }
 
-    public List<ApproveLeaveDto> findAllApproved(Integer index, Integer size) throws LmsException {
-        try {
+    @Throws(LmsException::class)
+    fun findAllApproved(index: Int?, size: Int?): List<LeaveDto> {
+        return try {
             if (index != null && size != null) {
-                Page page = Page.of(index, size);
-                return mapper.entitiesToDtos(repository.find("approved", YesOrNo.YES).page(page).list());
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.find("approved", YesOrNo.YES).page<Leave>(page).list<Leave>())
             }
-            return mapper.entitiesToDtos(repository.list("approved", YesOrNo.YES));
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred :" + ex.getMessage());
+            mapper.entitiesToDtos(repository.list("approved", YesOrNo.YES))
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred :${ex.message}")
         }
     }
 
-    public LeaveDto findById(BigInteger id) throws LmsException {
-        try {
-            return mapper.entityToDto(repository.findById(id));
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred:" + ex.getMessage());
+    @Throws(LmsException::class)
+    fun findById(id: BigInteger?): LeaveDto {
+        return try {
+            mapper.entityToDto(repository.findById(id))
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
-    public Boolean create(LeaveDto dto) throws LmsException {
-        try {
-            Leave entity = mapper.DtoToEntity(dto);
-            if (entity.getType().equals(LeaveType.PAID_LEAVE)) {
-                Person person = personRepository.findById(entity.getPersonId());
-                if (person == null)
-                    throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not exist");
-                if (getRemainingLeaves(person) < getNumberOfRequestedLeaves(entity)) {
-                    throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
-                }
-            }
-            repository.persistAndFlush(entity);
+    @Throws(LmsException::class)
+    fun create(dto: LeaveDto): Boolean {
+        return try {
+            val person = processLeave(dto)
 
             //create notification
-            CreateNotificationDto notification = new CreateNotificationDto();
-            notification.setContent("New leave request have been submitted from " + dto.getPersonId().getFname() + dto.getPersonId().getLname());
-            notification.setRecipientRoleIds(Set.of(Role.ROLE_ADMIN));
-            notificationService.create(notification);
-            return true;
-        } catch (Exception ex) {
-            throw new LmsException("An error occurred:" + ex.getMessage());
+            createNotification(
+                content = "New leave request have been submitted from ${person.fname} ${person.lname}",
+                recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
+            )
+            true
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
         }
     }
 
-    public Boolean update(LeaveDto dto) throws LmsException {
-        Leave entity = repository.findById(dto.getId());
-        if (entity != null) {
-            if (entity.getApproved() == null) {
-                entity = mapper.DtoToEntity(dto);
-                if (entity.getType().equals(LeaveType.PAID_LEAVE)) {
-                    Person person = personRepository.findById(entity.getPersonId());
-                    if (person == null)
-                        throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not exist");
-                    if (getRemainingLeaves(person) < getNumberOfRequestedLeaves(entity)) {
-                        throw new LmsException("Person with id:" + dto.getPersonId().getId() + " does not have enough remaining days of leave");
-                    }
-                }
-                repository.persistAndFlush(entity);
-
-                //create notification
-                CreateNotificationDto notification = new CreateNotificationDto();
-                notification.setContent("A leave request have been updated from " + dto.getPersonId().getFname() + " " + dto.getPersonId().getLname());
-                notification.setRecipientRoleIds(Set.of(Role.ROLE_ADMIN));
-                notificationService.create(notification);
-                return true;
-            } else {
-                throw new LmsException("Leave with id:" + dto.getId() + " cannot get modified because has been marked as " + (entity.getApproved().equals(YesOrNo.YES) ? "approved" : "not approved"));
-            }
-        }
-        throw new LmsException("Leave with id:" + dto.getId() + " does not exist");
-    }
-
-    public Boolean delete(LeaveDto dto) throws LmsException {
-        Leave entity = repository.findById(dto.getId());
-        if (entity != null) {
-            repository.delete(entity);
-            return true;
-        }
-        throw new LmsException("Leave with id:" + dto.getId() + " does not exist");
-    }
-
-    public Boolean approve(ApproveLeaveDto dto) throws LmsException {
-        Leave entity = repository.findById(dto.getId());
-        if (entity != null) {
-            if (dto.getApproved().equals(YesOrNo.YES) && entity.getType().equals(LeaveType.PAID_LEAVE)) {
-                if (getRemainingLeaves(entity.getPersonByPersonId()) < getNumberOfRequestedLeaves(entity)) {
-                    throw new LmsException("Person with id:" + entity.getPersonId() + " does not have enough remaining days of leave");
-                }
-            }
-            entity.setApproved(dto.getApproved());
-            entity.setApprovedDate(LocalDate.now());
-            entity.setApprovedBy(BigInteger.ONE);
-            repository.persistAndFlush(entity);
+    @Throws(LmsException::class)
+    fun update(dto: LeaveDto): Boolean {
+        val entity: Leave =
+            repository.findById(dto.id) ?: throw LmsException("Leave with id:" + dto.id + " does not exist")
+        return if (entity.approved == null) {
+            val person = processLeave(dto)
 
             //create notification
-            CreateNotificationDto notification = new CreateNotificationDto();
-            notification.setContent("Your request have been updated as " + (dto.getApproved().equals(YesOrNo.YES) ? "approved" : "not approved"));
-            notification.setRecipientPersonId(entity.getPersonId());
-            notification.setRecipientRoleIds(Set.of(Role.ROLE_ADMIN));
-            notificationService.create(notification);
-            return true;
+            createNotification(
+                content = "A leave request have been updated from ${person.fname} ${person.lname}",
+                recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
+            )
+            true
+        } else {
+            throw LmsException("Leave with id:" + entity.id + " cannot get modified because has been marked as " + if (entity.approved == YesOrNo.YES) "approved" else "not approved")
         }
-        throw new LmsException("Leave with id:" + dto.getId() + " does not exist");
     }
 
+    private fun processLeave(dto: LeaveDto): Person {
+        val entity: Leave = mapper.DtoToEntity(dto)
+        val person = personRepository.findById(dto.personId)
+            ?: throw LmsException("Person with id:" + dto.personId + " does not exist")
+        if (entity.type == LeaveType.PAID_LEAVE) {
+            if (person.getRemainingLeaves() < entity.getNumberOfRequestedLeaves()) {
+                throw LmsException("Person with id:${person.id} does not have enough remaining days of leave")
+            }
+        }
+        repository.persistAndFlush(entity)
+        return person
+    }
 
+    @Throws(LmsException::class)
+    fun delete(dto: LeaveDto): Boolean {
+        val entity: Leave =
+            repository.findById(dto.id) ?: throw LmsException("Leave with id:" + dto.id + " does not exist")
+        try {
+            repository.delete(entity)
+            return true
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred:${ex.message}")
+        }
+    }
+
+    @Throws(LmsException::class)
+    fun approve(dto: ApproveLeaveDto): Boolean {
+        val entity: Leave =
+            repository.findById(dto.id) ?: throw LmsException("Leave with id:" + dto.id + " does not exist")
+        //check if person has enough remaining leaves only if approved is yes
+        if (dto.approved == YesOrNo.YES && entity.type == LeaveType.PAID_LEAVE) {
+            val person = personRepository.findById(entity.personId)
+                ?: throw LmsException("Person with id:" + entity.personId + " does not exist")
+            if (person.getRemainingLeaves() < entity.getNumberOfRequestedLeaves()) {
+                throw LmsException("Person with id:" + entity.personId + " does not have enough remaining days of leave")
+            }
+        }
+        entity.approved = dto.approved
+        entity.approvedDate = LocalDate.now()
+        entity.approvedBy = BigInteger.ONE // TODO:to be retrieved from token
+        repository.persistAndFlush(entity)
+
+        //create notification
+        createNotification(
+            content = "Your request have been updated as " + if (dto.approved == YesOrNo.YES) "approved" else "not approved",
+            recipientPersonId = entity.personId,
+            recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
+        )
+        return true
+    }
+
+    private fun createNotification(
+        content: String,
+        recipientPersonId: BigInteger? = null,
+        recipientRoleIds: MutableSet<BigInteger>? = mutableSetOf()
+    ) {
+        val notification = CreateNotificationDto()
+        notification.content = content
+        notification.recipientPersonId = recipientPersonId
+        notification.recipientRoleIds = recipientRoleIds
+        notificationService.create(notification)
+    }
 }
