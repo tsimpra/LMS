@@ -1,94 +1,93 @@
-package gr.apt.controller;
+package gr.apt.controller
 
-import gr.apt.dto.leave.ApproveLeaveDto;
-import gr.apt.dto.leave.LeaveDto;
-import gr.apt.exception.LmsException;
-import gr.apt.service.LeaveService;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.math.BigInteger;
-import java.util.List;
+import gr.apt.dto.leave.ApproveLeaveDto
+import gr.apt.dto.leave.LeaveDto
+import gr.apt.exception.LmsException
+import gr.apt.service.LeaveService
+import java.math.BigInteger
+import javax.inject.Inject
+import javax.ws.rs.*
+import javax.ws.rs.core.Response
 
 @Path("/leave")
 @Produces("application/json")
-public class LeaveController {
-    @Inject
-    LeaveService service;
+class LeaveController {
+    @get:Inject
+    lateinit var service: LeaveService
 
     @GET
     @Path("/list")
-    public Response findAll(@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException{
-        List list = service.findAll(index,size);
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun findAll(@QueryParam("index") index: Int?, @QueryParam("size") size: Int?): Response {
+        val list: List<*> = service.findAll(index, size)
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/{personId}/list")
-    public Response findAllByPersonId(@PathParam("personId") BigInteger personId,@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException{
-        List list = service.findAllByPersonId(personId,index,size);
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun findAllByPersonId(
+        @PathParam("personId") personId: BigInteger?,
+        @QueryParam("index") index: Int?,
+        @QueryParam("size") size: Int?
+    ): Response {
+        val list: List<*> = service.findAllByPersonId(personId, index, size)
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/list-pending")
-    public Response findAllPending(@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException{
-        List list = service.findAllPending(index,size);
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun findAllPending(@QueryParam("index") index: Int?, @QueryParam("size") size: Int?): Response {
+        val list: List<*> = service.findAllPending(index, size)
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/list-approved")
-    public Response findAllApproved(@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException{
-        List list = service.findAllApproved(index,size);
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun findAllApproved(@QueryParam("index") index: Int?, @QueryParam("size") size: Int?): Response {
+        val list: List<*> = service.findAllApproved(index, size)
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id")BigInteger id) throws LmsException{
-        LeaveDto dto = service.findById(id);
-        if(dto != null){
-            return Response.ok(dto).build();
-        }
-        throw new LmsException("Could not find Leave with id:"+id);
+    @Throws(LmsException::class)
+    fun findById(@PathParam("id") id: BigInteger): Response {
+        val dto = service.findById(id)
+        return Response.ok(dto).build()
     }
 
     @POST
     @Consumes("application/json")
-    public Response create(LeaveDto dto) throws LmsException{
-        return service.create(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun create(dto: LeaveDto): Response {
+        return if (service.create(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @PUT
     @Consumes("application/json")
-    public Response update(LeaveDto dto) throws LmsException{
-        return service.update(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun update(dto: LeaveDto): Response {
+        return if (service.update(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @DELETE
     @Consumes("application/json")
-    public Response delete(LeaveDto dto) throws LmsException{
-        return service.delete(dto) ? Response.ok().build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun delete(dto: LeaveDto): Response {
+        return if (service.delete(dto)) Response.ok().build() else Response.status(Response.Status.CONFLICT).build()
     }
 
     @PUT
     @Path("/approve")
     @Consumes("application/json")
-    public Response approve(ApproveLeaveDto dto) throws LmsException {
-        return service.approve(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun approve(dto: ApproveLeaveDto): Response {
+        return if (service.approve(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 }

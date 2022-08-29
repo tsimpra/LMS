@@ -1,62 +1,66 @@
-package gr.apt.controller;
+package gr.apt.controller
 
-import gr.apt.dto.person.PersonDto;
-import gr.apt.exception.LmsException;
-import gr.apt.service.PersonService;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.math.BigInteger;
-import java.util.List;
+import gr.apt.dto.person.PersonDto
+import gr.apt.exception.LmsException
+import gr.apt.service.PersonService
+import java.math.BigInteger
+import javax.inject.Inject
+import javax.ws.rs.*
+import javax.ws.rs.core.Response
 
 @Path("/person")
 @Produces("application/json")
-public class PersonController {
-    @Inject
-    PersonService service;
+class PersonController {
+
+    @get:Inject
+    lateinit var service: PersonService
 
     @GET
     @Path("/list")
-    public Response findAll(@QueryParam("index") Integer index, @QueryParam("size") Integer size) throws LmsException {
-        List list = service.findAll(index,size);
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun findAll(@QueryParam("index") index: Int?, @QueryParam("size") size: Int?): Response {
+        val list: List<*> = service.findAll(index, size)
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") BigInteger id) throws LmsException {
-        PersonDto dto = service.findById(id);
-        if(dto != null){
-            return Response.ok(dto).build();
-        }
-        throw new LmsException("Could not find Leave with id:"+id);
+    @Throws(LmsException::class)
+    fun findById(@PathParam("id") id: BigInteger): Response {
+        val dto = service.findById(id)
+        return Response.ok(dto).build()
+        throw LmsException("Could not find Leave with id:$id")
     }
 
     @POST
     @Consumes("application/json")
-    public Response create(PersonDto dto) throws LmsException {
-        return service.create(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun create(dto: PersonDto): Response {
+        return if (service.create(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @PUT
     @Consumes("application/json")
-    public Response update(PersonDto dto) throws LmsException {
-        return service.update(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun update(dto: PersonDto): Response {
+        return if (service.update(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @DELETE
     @Consumes("application/json")
-    public Response delete(PersonDto dto) throws LmsException {
-        return service.delete(dto) ? Response.ok().build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun delete(dto: PersonDto): Response {
+        return if (service.delete(dto)) Response.ok().build() else Response.status(Response.Status.CONFLICT).build()
     }
 
+    //TODO: replacer this endpoint with a cronjob if possible
     @GET
     @Path("/refresh")
-    public Response refresh() throws LmsException {
-        return service.refreshDaysOfLeaves() ? Response.ok().build():Response.status(Response.Status.CONFLICT).build();
+    @Throws(LmsException::class)
+    fun refresh(): Response {
+        return if (service.refreshDaysOfLeaves()) Response.ok().build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 }

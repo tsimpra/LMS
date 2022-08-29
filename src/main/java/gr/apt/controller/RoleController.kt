@@ -1,55 +1,49 @@
-package gr.apt.controller;
+package gr.apt.controller
 
-import gr.apt.dto.RoleDto;
-import gr.apt.service.RoleService;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.math.BigInteger;
-import java.util.List;
+import gr.apt.dto.RoleDto
+import gr.apt.service.RoleService
+import java.math.BigInteger
+import javax.inject.Inject
+import javax.ws.rs.*
+import javax.ws.rs.core.Response
 
 @Path("/role")
 @Produces("application/json")
-public class RoleController {
-    @Inject
-    RoleService service;
+class RoleController {
+    @get:Inject
+    lateinit var service: RoleService
 
     @GET
     @Path("/list")
-    public Response findAll(){
-        List list = service.findAll();
-        if(list != null){
-            return Response.ok(list).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    fun findAll(): Response {
+        val list: List<*> = service.findAll()
+        return Response.ok(list).build()
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") BigInteger id){
-        RoleDto dto = service.findById(id);
-        if(dto != null){
-            return Response.ok(dto).build();
-        }
-        return Response.status(Response.Status.CONFLICT).build();
+    fun findById(@PathParam("id") id: BigInteger): Response {
+        val dto = service.findById(id)
+        return Response.ok(dto).build()
     }
 
     @POST
     @Consumes("application/json")
-    public Response create(RoleDto dto){
-        return service.create(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    fun create(dto: RoleDto): Response {
+        return if (service.create(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @PUT
     @Consumes("application/json")
-    public Response update(RoleDto dto){
-        return service.update(dto) ? Response.ok(dto).build():Response.status(Response.Status.CONFLICT).build();
+    fun update(dto: RoleDto): Response {
+        return if (service.update(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
+            .build()
     }
 
     @DELETE
     @Consumes("application/json")
-    public Response delete(RoleDto dto){
-        return service.delete(dto) ? Response.ok().build():Response.status(Response.Status.CONFLICT).build();
+    fun delete(dto: RoleDto): Response {
+        return if (service.delete(dto)) Response.ok().build() else Response.status(Response.Status.CONFLICT).build()
     }
 }
