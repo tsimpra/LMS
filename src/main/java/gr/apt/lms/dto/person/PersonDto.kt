@@ -8,9 +8,11 @@ import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.persistence.entity.superclass.AbstractEntity
 import gr.apt.lms.persistence.enumeration.Job
 import gr.apt.lms.persistence.enumeration.YesOrNo
+import gr.apt.lms.utils.Dto
 import java.math.BigInteger
 import java.time.LocalDate
 
+@Dto
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PersonDto(

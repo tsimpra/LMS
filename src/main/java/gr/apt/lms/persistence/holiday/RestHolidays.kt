@@ -1,19 +1,11 @@
 package gr.apt.lms.persistence.holiday
 
 import gr.apt.lms.persistence.entity.superclass.AbstractEntity
-import lombok.AllArgsConstructor
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.Setter
 import java.math.BigInteger
 import java.time.LocalDate
 import javax.persistence.*
 import javax.validation.constraints.FutureOrPresent
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "rest_holidays", schema = "lms")
 open class RestHolidays : AbstractEntity() {

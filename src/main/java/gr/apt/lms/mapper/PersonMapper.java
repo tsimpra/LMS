@@ -3,6 +3,8 @@ package gr.apt.lms.mapper;
 import gr.apt.lms.dto.RoleDto;
 import gr.apt.lms.dto.person.PersonBasicInfoDto;
 import gr.apt.lms.dto.person.PersonDto;
+import gr.apt.lms.metamodel.dto.PersonDto_;
+import gr.apt.lms.metamodel.entity.Person_;
 import gr.apt.lms.persistence.entity.Person;
 import gr.apt.lms.repository.RoleRepository;
 import gr.apt.lms.utils.LeaveUtilsKt;
@@ -24,9 +26,9 @@ public interface PersonMapper {
     Person DtoToEntity(PersonDto dto);
 
     @Mappings({
-            @Mapping(source = "id", target = "roles", qualifiedByName = "getRoles"),
-            @Mapping(target = "usedLeaves", expression = "java(LeaveUtilsKt.getUsedLeaves(entity))"),
-            @Mapping(target = "remainingLeaves", expression = "java(LeaveUtilsKt.getRemainingLeaves(entity))")
+            @Mapping(source = Person_.ID, target = PersonDto_.ROLES, qualifiedByName = "getRoles"),
+            @Mapping(target = PersonDto_.USED_LEAVES, expression = "java(LeaveUtilsKt.getUsedLeaves(entity))"),
+            @Mapping(target = PersonDto_.REMAINING_LEAVES, expression = "java(LeaveUtilsKt.getRemainingLeaves(entity))")
     })
     PersonDto entityToDto(Person entity);
 

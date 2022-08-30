@@ -3,8 +3,10 @@ package gr.apt.lms.dto.leave
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import gr.apt.lms.persistence.enumeration.YesOrNo
+import gr.apt.lms.utils.Dto
 import java.math.BigInteger
 
+@Dto
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ApproveLeaveDto(

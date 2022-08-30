@@ -2,6 +2,8 @@ package gr.apt.lms.mapper;
 
 import gr.apt.lms.dto.leave.LeaveDto;
 import gr.apt.lms.dto.person.PersonBasicInfoDto;
+import gr.apt.lms.metamodel.dto.LeaveDto_;
+import gr.apt.lms.metamodel.entity.Leave_;
 import gr.apt.lms.persistence.entity.Leave;
 import gr.apt.lms.repository.PersonRepository;
 import gr.apt.lms.utils.LeaveUtilsKt;
@@ -20,17 +22,17 @@ public interface LeaveMapper {
     LeaveMapper INSTANCE = Mappers.getMapper(LeaveMapper.class);
 
     @Mappings({
-            @Mapping(source = "approvedBy", target = "approvedBy", ignore = true),
-            @Mapping(source = "approvedDate", target = "approvedDate", ignore = true),
-            @Mapping(source = "approved", target = "approved", ignore = true)
+            @Mapping(source = LeaveDto_.APPROVED_BY, target = Leave_.APPROVED_BY, ignore = true),
+            @Mapping(source = LeaveDto_.APPROVED_DATE, target = Leave_.APPROVED_DATE, ignore = true),
+            @Mapping(source = LeaveDto_.APPROVED, target = Leave_.APPROVED, ignore = true)
     })
     Leave DtoToEntity(LeaveDto dto);
 
     @Mappings({
-            @Mapping(source = "approvedBy", target = "approvedBy", qualifiedByName = "getApprovedByPersonInfo"),
-            @Mapping(source = "approvedDate", target = "approvedDate"),
-            @Mapping(source = "approved", target = "approved"),
-            @Mapping(target = "numberOfRequestedLeaves", expression = "java(LeaveUtilsKt.getNumberOfRequestedLeaves(entity))")
+            @Mapping(source = Leave_.APPROVED_BY, target = LeaveDto_.APPROVED_BY, qualifiedByName = "getApprovedByPersonInfo"),
+            @Mapping(source = Leave_.APPROVED_DATE, target = LeaveDto_.APPROVED_DATE),
+            @Mapping(source = Leave_.APPROVED, target = LeaveDto_.APPROVED),
+            @Mapping(target = LeaveDto_.NUMBER_OF_REQUESTED_LEAVES, expression = "java(LeaveUtilsKt.getNumberOfRequestedLeaves(entity))")
     })
     LeaveDto entityToDto(Leave entity);
 
