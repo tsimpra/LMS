@@ -51,7 +51,7 @@ class LeaveService {
     }
 
     @Throws(LmsException::class)
-    fun findAllByPersonId(personId: BigInteger?, index: Int?, size: Int?): List<LeaveDto> {
+    fun findAllByPersonId(personId: BigInteger, index: Int?, size: Int?): List<LeaveDto> {
         return try {
             if (index != null && size != null) {
                 val page = Page.of(index, size)

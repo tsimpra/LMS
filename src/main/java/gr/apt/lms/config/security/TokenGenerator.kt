@@ -5,12 +5,14 @@ import java.util.*
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class TokenGenerator {
-    fun generateToken(username: String?): String {
+object TokenGenerator {
+
+    internal const val USERNAME_CLAIM = "username"
+    fun generateToken(username: String): String {
         //TODO: make generate token work for real time service
         return Jwt.issuer("https://example.com/issuer") //.upn("jdoe@quarkus.io")
             .groups(HashSet(Arrays.asList("User", "Admin")))
-            .claim("username", username)
+            .claim(USERNAME_CLAIM, username)
             .sign()
     }
 }

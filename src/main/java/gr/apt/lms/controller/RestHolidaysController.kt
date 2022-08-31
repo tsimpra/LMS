@@ -5,45 +5,35 @@ import gr.apt.lms.service.RestHolidaysService
 import java.math.BigInteger
 import javax.inject.Inject
 import javax.ws.rs.*
+import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Path("/rest-holidays")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 class RestHolidaysController {
     @get:Inject
     lateinit var service: RestHolidaysService
 
     @GET
     @Path("/list")
-    fun findAll(): Response {
-        val list: List<*> = service.findAll()
-        return Response.ok(list).build()
-    }
+    fun findAll() = Response.ok(service.findAll()).build()
+
 
     @GET
     @Path("/{id}")
-    fun findById(@PathParam("id") id: BigInteger): Response {
-        val dto = service.findById(id)
-        return Response.ok(dto).build()
-    }
+    fun findById(@PathParam("id") id: BigInteger) =
+        Response.ok(service.findById(id)).build()
+
 
     @POST
-    @Consumes("application/json")
-    fun create(dto: RestHolidaysDto): Response {
-        return if (service.create(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
-            .build()
-    }
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun create(dto: RestHolidaysDto) = Response.ok(service.create(dto)).build()
 
     @PUT
-    @Consumes("application/json")
-    fun update(dto: RestHolidaysDto): Response {
-        return if (service.update(dto)) Response.ok(dto).build() else Response.status(Response.Status.CONFLICT)
-            .build()
-    }
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun update(dto: RestHolidaysDto) = Response.ok(service.update(dto)).build()
 
     @DELETE
-    @Consumes("application/json")
-    fun delete(dto: RestHolidaysDto): Response {
-        return if (service.delete(dto)) Response.ok().build() else Response.status(Response.Status.CONFLICT).build()
-    }
+    @Consumes(MediaType.APPLICATION_JSON)
+    fun delete(dto: RestHolidaysDto) = Response.ok(service.delete(dto)).build()
 }

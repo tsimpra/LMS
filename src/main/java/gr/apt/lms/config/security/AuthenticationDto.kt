@@ -7,6 +7,6 @@ import javax.validation.constraints.NotNull
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AuthenticationDto(
-    var username: @NotNull String? = null,
-    var password: @NotNull String? = null
+    var username: @NotNull String = "",
+    var password: @NotNull String = ""
 )
