@@ -115,7 +115,6 @@ class NotificationService {
         return try {
             val entity = mapper.DtoToEntity(dto)
             repository.persistAndFlush(entity)
-            //repository.entityManager.refresh(entity)
             if (dto.recipientPersonId != null) {
                 recipientPersonsRepository.persist(NotificationRecipientPersons(dto.recipientPersonId, entity.id))
             }
@@ -154,6 +153,18 @@ class NotificationService {
         } catch (ex: Exception) {
             throw LmsException("An error occurred:${ex.message}")
         }
+    }
+
+    fun createNotification(
+        content: String,
+        recipientPersonId: BigInteger? = null,
+        recipientRoleIds: MutableSet<BigInteger>? = mutableSetOf()
+    ) {
+        val notification = CreateNotificationDto()
+        notification.content = content
+        notification.recipientPersonId = recipientPersonId
+        notification.recipientRoleIds = recipientRoleIds
+        create(notification)
     }
 
     //    public Boolean delete(NotificationDto dto) {

@@ -1,6 +1,5 @@
 package gr.apt.lms.service
 
-import gr.apt.lms.dto.notification.CreateNotificationDto
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.exception.LmsException
 import gr.apt.lms.mapper.PersonMapper
@@ -11,7 +10,6 @@ import gr.apt.lms.service.notification.NotificationService
 import gr.apt.lms.utils.calculateTotalNumberOfLeaves
 import io.quarkus.panache.common.Page
 import java.math.BigInteger
-import java.util.Set
 import java.util.function.Consumer
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
@@ -23,7 +21,7 @@ class PersonService {
     @get:Inject
     lateinit var repository: PersonRepository
 
-    @Inject
+    @get:Inject
     lateinit var notificationService: NotificationService
 
     @Inject
@@ -61,10 +59,10 @@ class PersonService {
             repository.persistAndFlush(entity)
 
             //create notification
-            val notification = CreateNotificationDto()
-            notification.content = "New person had been added: ${entity.fname} ${entity.lname}"
-            notification.recipientRoleIds = Set.of(Role.ROLE_ADMIN)
-            notificationService.create(notification)
+            notificationService.createNotification(
+                content = "New person had been added: ${entity.fname} ${entity.lname}",
+                recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
+            )
             true
         } catch (ex: Exception) {
             throw LmsException("An error occurred: ${ex.message}")
@@ -80,10 +78,10 @@ class PersonService {
             repository.persistAndFlush(entity)
 
             //create notification
-            val notification = CreateNotificationDto()
-            notification.content = "The person with id: ${entity.id} has been modified"
-            notification.recipientRoleIds = Set.of(Role.ROLE_ADMIN)
-            notificationService.create(notification)
+            notificationService.createNotification(
+                content = "The person with id: ${entity.id} has been modified",
+                recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
+            )
             true
         } catch (ex: Exception) {
             throw LmsException("An error occurred: ${ex.message}")

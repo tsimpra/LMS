@@ -97,7 +97,7 @@ fun Person.getRemainingLeaves(): Int {
 
 fun Person.getUsedLeaves(): Int {
     var used = 0
-    val leaveRepository = CDI.current().select<LeaveRepository>(LeaveRepository::class.java).get()
+    val leaveRepository = CDI.current().select(LeaveRepository::class.java).get()
     val personLeaves =
         leaveRepository.getPersonLeaves(this.id ?: throw LmsException("A person cannot have null id")).filterNotNull()
     if (personLeaves.isNeitherNullNorEmpty()) {
