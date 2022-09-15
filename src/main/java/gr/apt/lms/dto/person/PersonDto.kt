@@ -31,7 +31,7 @@ data class PersonDto(
     var numberOfLeaves: Int? = null,
     var usedLeaves: Int? = null,
     var remainingLeaves: Int? = null,
-    var isActive: YesOrNo? = null,
+    var enabled: YesOrNo? = null,
     var roles: Collection<RoleDto>? = null
 ) : AbstractEntity() {
 

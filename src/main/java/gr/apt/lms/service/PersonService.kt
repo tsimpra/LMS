@@ -11,17 +11,17 @@ import gr.apt.lms.utils.calculateTotalNumberOfLeaves
 import io.quarkus.panache.common.Page
 import java.math.BigInteger
 import java.util.function.Consumer
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class PersonService {
-    @get:Inject
+    @Inject
     lateinit var repository: PersonRepository
 
-    @get:Inject
+    @Inject
     lateinit var notificationService: NotificationService
 
     @Inject

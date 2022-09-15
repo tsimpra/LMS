@@ -18,20 +18,20 @@ import gr.apt.lms.utils.getRemainingLeaves
 import io.quarkus.panache.common.Page
 import java.math.BigInteger
 import java.time.LocalDate
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class LeaveService {
-    @get:Inject
+    @Inject
     lateinit var repository: LeaveRepository
 
-    @get:Inject
+    @Inject
     lateinit var personRepository: PersonRepository
 
-    @get:Inject
+    @Inject
     lateinit var notificationService: NotificationService
 
     @Inject

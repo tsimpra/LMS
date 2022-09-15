@@ -3,7 +3,7 @@ package gr.apt.lms.repository.notification
 import gr.apt.lms.persistence.entity.notification.NotificationViewers
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
+import javax.inject.Singleton
 
-@ApplicationScoped
+@Singleton
 class NotificationViewersRepository : PanacheRepositoryBase<NotificationViewers?, BigInteger?>

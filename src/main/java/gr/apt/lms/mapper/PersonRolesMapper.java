@@ -2,13 +2,12 @@ package gr.apt.lms.mapper;
 
 import gr.apt.lms.dto.PersonRolesDto;
 import gr.apt.lms.persistence.entity.PersonRoles;
-import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "cdi", uses = {RoleMapper.class, PersonMapper.class},injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "cdi")
 public interface PersonRolesMapper {
     PersonRolesMapper INSTANCE = Mappers.getMapper(PersonRolesMapper.class);
 

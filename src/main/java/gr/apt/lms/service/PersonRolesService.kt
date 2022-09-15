@@ -4,14 +4,14 @@ import gr.apt.lms.dto.PersonRolesDto
 import gr.apt.lms.mapper.PersonRolesMapper
 import gr.apt.lms.repository.PersonRolesRepository
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class PersonRolesService {
-    @get:Inject
+    @Inject
     lateinit var repository: PersonRolesRepository
 
     @Inject

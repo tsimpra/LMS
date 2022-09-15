@@ -19,32 +19,32 @@ import gr.apt.lms.repository.notification.NotificationViewersRepository
 import gr.apt.lms.utils.isNeitherNullNorEmpty
 import io.quarkus.panache.common.Page
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class NotificationService {
-    @get:Inject
+    @Inject
     lateinit var repository: NotificationRepository
 
-    @get:Inject
+    @Inject
     lateinit var recipientPersonsRepository: NotificationRecipientPersonsRepository
 
-    @get:Inject
+    @Inject
     lateinit var recipientRolesRepository: NotificationRecipientRolesRepository
 
-    @get:Inject
+    @Inject
     lateinit var viewersRepository: NotificationViewersRepository
 
-    @get:Inject
+    @Inject
     lateinit var personRepository: PersonRepository
 
-    @get:Inject
+    @Inject
     lateinit var roleRepository: RoleRepository
 
-    @get:Inject
+    @Inject
     lateinit var personRoleRepository: PersonRolesRepository
 
     @Inject
@@ -53,8 +53,7 @@ class NotificationService {
     @Throws(LmsException::class)
     fun findAll(personId: BigInteger, index: Int?, size: Int?): List<NotificationDto> {
         return try {
-            val person =
-                personRepository.findById(personId) ?: throw LmsException("Person with id:$personId does not exist")
+            personRepository.findById(personId) ?: throw LmsException("Person with id:$personId does not exist")
             val roleIds: Set<BigInteger> = personRoleRepository.getRoleIdsByPersonId(personId).toSet()
 //            val notifIds: MutableSet<BigInteger?> = HashSet()
 //            val recipientRoles = recipientRolesRepository.list("roleId", roleIds).filterNotNull()

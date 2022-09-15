@@ -4,14 +4,14 @@ import gr.apt.lms.dto.RestHolidaysDto
 import gr.apt.lms.mapper.RestHolidaysMapper
 import gr.apt.lms.repository.RestHolidaysRepository
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class RestHolidaysService {
-    @get:Inject
+    @Inject
     lateinit var repository: RestHolidaysRepository
 
     @Inject

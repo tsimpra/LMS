@@ -61,12 +61,11 @@ fun Leave.getNumberOfRequestedLeaves(): Int {
 
 
 fun calculateTotalNumberOfLeaves(dateOfEmployment: LocalDate): Int {
-    var leaves = 0
     val totalDays: Long = ChronoUnit.DAYS.between(
         dateOfEmployment,
         LocalDate.of(LocalDate.now().getYear(), Month.DECEMBER, 31)
     ) //compareTo(dateOfEmployment);
-    leaves = if (totalDays > 25 * 365) {
+    var leaves = if (totalDays > 25 * 365) {
         26
     } else if (totalDays > 10 * 365) {
         25

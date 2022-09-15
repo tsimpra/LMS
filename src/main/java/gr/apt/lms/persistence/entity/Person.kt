@@ -3,7 +3,6 @@ package gr.apt.lms.persistence.entity
 import gr.apt.lms.persistence.entity.superclass.AbstractEntity
 import gr.apt.lms.persistence.enumeration.Job
 import gr.apt.lms.persistence.enumeration.YesOrNo
-import org.hibernate.annotations.Where
 import java.math.BigInteger
 import java.time.LocalDate
 import javax.persistence.*
@@ -57,9 +56,8 @@ open class Person : AbstractEntity() {
 
     @Basic
     @Enumerated
-    @Column(name = "is_active", nullable = true)
-    @Where(clause = "isActive = 1")
-    open var isActive: YesOrNo? = null
+    @Column(name = "enabled", nullable = true)
+    open var enabled: YesOrNo? = null
 
 //    @JsonBackReference
 //    @OneToMany(mappedBy = "personByPersonId")

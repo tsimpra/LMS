@@ -5,9 +5,9 @@ import gr.apt.lms.utils.isNeitherNullNorEmpty
 import io.quarkus.hibernate.orm.panache.PanacheQuery
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
+import javax.inject.Singleton
 
-@ApplicationScoped
+@Singleton
 class NotificationRepository : PanacheRepositoryBase<Notification?, BigInteger?> {
 
     fun getNotificationsByPersonIdAndRoleIds(

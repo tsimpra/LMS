@@ -3,9 +3,9 @@ package gr.apt.lms.repository
 import gr.apt.lms.persistence.entity.PersonRoles
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
+import javax.inject.Singleton
 
-@ApplicationScoped
+@Singleton
 class PersonRolesRepository : PanacheRepositoryBase<PersonRoles?, BigInteger?> {
 
     fun getRoleIdsByPersonId(personId: BigInteger) =

@@ -4,14 +4,14 @@ import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.mapper.RoleMapper
 import gr.apt.lms.repository.RoleRepository
 import java.math.BigInteger
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
-@ApplicationScoped
+@Singleton
 @Transactional
 class RoleService {
-    @get:Inject
+    @Inject
     lateinit var repository: RoleRepository
 
     @Inject
