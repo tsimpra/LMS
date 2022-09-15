@@ -75,7 +75,7 @@ class PersonService {
             ?: throw LmsException("Could not find person with id ${dto.id}")
         return try {
             val entity = mapper.DtoToEntity(dto)
-            repository.persistAndFlush(entity)
+            repository.entityManager.merge(entity)
 
             //create notification
             notificationService.createNotification(

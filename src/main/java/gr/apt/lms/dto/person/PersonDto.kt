@@ -20,13 +20,13 @@ data class PersonDto(
     var fname: String? = null,
     var lname: String? = null,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    var dateOfBirth: LocalDate? = null,
+    var dateOfBirth: LocalDate = LocalDate.now(),
     var email: String? = null,
     var username: String? = null,
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    var dateOfEmployment: LocalDate? = null,
+    var dateOfEmployment: LocalDate = LocalDate.now(),
     var job: Job? = null,
     var numberOfLeaves: Int? = null,
     var usedLeaves: Int? = null,

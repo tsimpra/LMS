@@ -7,7 +7,13 @@ import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "roles", schema = "lms", uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("role"))])
-open class Role : AbstractEntity() {
+open class Role() : AbstractEntity() {
+
+    constructor(id: BigInteger, role: String) : this() {
+        this.id = id
+        this.role = role
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
     @SequenceGenerator(name = "roles_seq", sequenceName = "lms.lms_roles_id_seq", allocationSize = 1)
