@@ -103,7 +103,8 @@ class LeaveService : CrudService<LeaveDto> {
     @Throws(LmsException::class)
     override fun create(dto: LeaveDto): Boolean {
         return try {
-            val person = processLeave(dto)
+            val (entity, person) = processLeave(dto)
+            repository.persistAndFlush(entity)
 
             //create notification
             notificationService.createNotification(
@@ -121,7 +122,8 @@ class LeaveService : CrudService<LeaveDto> {
         val entity: Leave =
             repository.findById(dto.id) ?: throw LmsException("Leave with id: ${dto.id} does not exist")
         return if (entity.approved == null) {
-            val person = processLeave(dto)
+            val (mappedEntity, person) = processLeave(dto)
+            repository.entityManager.merge(mappedEntity)
 
             //create notification
             notificationService.createNotification(
@@ -134,7 +136,7 @@ class LeaveService : CrudService<LeaveDto> {
         }
     }
 
-    private fun processLeave(dto: LeaveDto): Person {
+    private fun processLeave(dto: LeaveDto): Pair<Leave, Person> {
         val entity: Leave = mapper.DtoToEntity(dto)
         val person = personRepository.findById(dto.personId)
             ?: throw LmsException("Person with id: ${dto.personId} does not exist")
@@ -143,8 +145,7 @@ class LeaveService : CrudService<LeaveDto> {
                 throw LmsException("Person with id: ${person.id} does not have enough remaining days of leave")
             }
         }
-        repository.persistAndFlush(entity)
-        return person
+        return entity to person
     }
 
     @Throws(LmsException::class)

@@ -36,7 +36,7 @@ class PersonList
     }
 
     /*grid configuration. Adds columns and calls rest configuration methods */
-    fun configureGrid() {
+    private fun configureGrid() {
         gridList.grid.addClassName("persons-grid")
         val stringComparator: (String?, String?) -> Int =
             { a: String?, b: String? -> if (a == null) -1 else if (b == null) 1 else a.compareTo(b) }

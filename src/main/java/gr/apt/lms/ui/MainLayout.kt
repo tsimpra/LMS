@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.HighlightConditions
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.router.RouterLink
+import gr.apt.lms.ui.leaves.LeaveList
 import gr.apt.lms.ui.persons.PersonList
 
 @Route("")
@@ -21,9 +22,11 @@ class MainLayout : AppLayout() {
     }
 
     private fun createDrawer() {
-        val listLink = RouterLink("Persons List", PersonList::class.java)
-        listLink.highlightCondition = HighlightConditions.sameLocation()
-        addToDrawer(VerticalLayout(listLink))
+        val personsLink = RouterLink("Persons List", PersonList::class.java)
+        personsLink.highlightCondition = HighlightConditions.sameLocation()
+        val leavesLink = RouterLink("Leaves List", LeaveList::class.java)
+        leavesLink.highlightCondition = HighlightConditions.sameLocation()
+        addToDrawer(VerticalLayout(personsLink, leavesLink))
     }
 
     private fun createHeader() {

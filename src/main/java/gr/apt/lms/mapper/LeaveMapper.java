@@ -41,8 +41,8 @@ public interface LeaveMapper {
     @Named("getApprovedByPersonInfo")
     static PersonBasicInfoDto getApprovedByPersonInfo(BigInteger id) {
         PersonRepository personRepository = CDI.current().select(PersonRepository.class).get();
-        if (personRepository != null)
-            return PersonMapper.INSTANCE.entityToBasicDto(personRepository.getPersonBasicInfo(id).singleResult());
+        if (personRepository != null && id != null)
+            return PersonMapper.INSTANCE.entityToBasicDto(personRepository.getPersonBasicInfo(id));
         else
             return null;
     }
