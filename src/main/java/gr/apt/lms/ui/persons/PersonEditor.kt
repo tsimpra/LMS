@@ -1,4 +1,4 @@
-package gr.apt.lms.ui
+package gr.apt.lms.ui.persons
 
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.textfield.TextField
@@ -7,6 +7,8 @@ import com.vaadin.flow.data.converter.StringToBigIntegerConverter
 import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.service.PersonService
+import gr.apt.lms.ui.Editor
+import gr.apt.lms.ui.Refreshable
 import java.time.LocalDate
 import javax.inject.Inject
 

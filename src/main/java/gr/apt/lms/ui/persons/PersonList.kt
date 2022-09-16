@@ -1,4 +1,4 @@
-package gr.apt.lms.ui
+package gr.apt.lms.ui.persons
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -14,6 +14,8 @@ import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.service.PersonService
+import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.ui.Refreshable
 import javax.inject.Inject
 import javax.inject.Singleton
 

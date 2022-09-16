@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.HighlightConditions
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.router.RouterLink
+import gr.apt.lms.ui.persons.PersonList
 
 @Route("")
 class MainLayout : AppLayout() {
