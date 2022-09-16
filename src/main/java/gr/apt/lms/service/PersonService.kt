@@ -17,7 +17,7 @@ import javax.transaction.Transactional
 
 @Singleton
 @Transactional
-class PersonService {
+class PersonService : CrudService<PersonDto> {
     @Inject
     lateinit var repository: PersonRepository
 
@@ -50,7 +50,7 @@ class PersonService {
     }
 
     @Throws(LmsException::class)
-    fun create(dto: PersonDto): Boolean {
+    override fun create(dto: PersonDto): Boolean {
         return try {
             val entity: Person = mapper.DtoToEntity(dto)
             entity.numberOfLeaves = calculateTotalNumberOfLeaves(
@@ -70,7 +70,7 @@ class PersonService {
     }
 
     @Throws(LmsException::class)
-    fun update(dto: PersonDto): Boolean {
+    override fun update(dto: PersonDto): Boolean {
         repository.findById(dto.id ?: throw LmsException("Id cannot be null"))
             ?: throw LmsException("Could not find person with id ${dto.id}")
         return try {
@@ -89,7 +89,7 @@ class PersonService {
     }
 
     @Throws(LmsException::class)
-    fun delete(dto: PersonDto): Boolean {
+    override fun delete(dto: PersonDto): Boolean {
         val entity: Person = repository.findById(dto.id ?: throw LmsException("Id cannot be null"))
             ?: throw LmsException("Could not find person with id ${dto.id}")
         return try {

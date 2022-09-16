@@ -24,7 +24,7 @@ import javax.transaction.Transactional
 
 @Singleton
 @Transactional
-class LeaveService {
+class LeaveService : CrudService<LeaveDto> {
     @Inject
     lateinit var repository: LeaveRepository
 
@@ -101,7 +101,7 @@ class LeaveService {
     }
 
     @Throws(LmsException::class)
-    fun create(dto: LeaveDto): Boolean {
+    override fun create(dto: LeaveDto): Boolean {
         return try {
             val person = processLeave(dto)
 
@@ -117,7 +117,7 @@ class LeaveService {
     }
 
     @Throws(LmsException::class)
-    fun update(dto: LeaveDto): Boolean {
+    override fun update(dto: LeaveDto): Boolean {
         val entity: Leave =
             repository.findById(dto.id) ?: throw LmsException("Leave with id: ${dto.id} does not exist")
         return if (entity.approved == null) {
@@ -148,7 +148,7 @@ class LeaveService {
     }
 
     @Throws(LmsException::class)
-    fun delete(dto: LeaveDto): Boolean {
+    override fun delete(dto: LeaveDto): Boolean {
         val entity: Leave =
             repository.findById(dto.id) ?: throw LmsException("Leave with id: ${dto.id} does not exist")
         try {

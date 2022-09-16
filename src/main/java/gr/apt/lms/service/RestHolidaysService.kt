@@ -10,7 +10,7 @@ import javax.transaction.Transactional
 
 @Singleton
 @Transactional
-class RestHolidaysService {
+class RestHolidaysService : CrudService<RestHolidaysDto> {
     @Inject
     lateinit var repository: RestHolidaysRepository
 
@@ -25,13 +25,13 @@ class RestHolidaysService {
         return mapper.entityToDto(repository.findById(id))
     }
 
-    fun create(dto: RestHolidaysDto?): Boolean {
+    override fun create(dto: RestHolidaysDto): Boolean {
         val entity = mapper.DtoToEntity(dto)
         repository.persistAndFlush(entity)
         return true
     }
 
-    fun update(dto: RestHolidaysDto): Boolean {
+    override fun update(dto: RestHolidaysDto): Boolean {
         var entity = repository.findById(dto.id)
         if (entity != null) {
             entity = mapper.DtoToEntity(dto)
@@ -41,7 +41,7 @@ class RestHolidaysService {
         return false
     }
 
-    fun delete(dto: RestHolidaysDto): Boolean {
+    override fun delete(dto: RestHolidaysDto): Boolean {
         val entity = repository.findById(dto.id)
         if (entity != null) {
             repository.delete(entity)

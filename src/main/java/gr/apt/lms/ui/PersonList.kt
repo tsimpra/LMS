@@ -7,21 +7,21 @@ import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.splitlayout.SplitLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.service.PersonService
-import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ApplicationScoped
+@Singleton
 @Route(value = "/persons", layout = MainLayout::class)
 class PersonList @Inject constructor(private val personService: PersonService) : VerticalLayout(), Refreshable {
     private val grid = Grid(PersonDto::class.java, false)
     private var editor: PersonEditor
-
 
     //Create the buttons for our UI
     private val create = Button("Create", Icon(VaadinIcon.PLUS))
@@ -84,8 +84,7 @@ class PersonList @Inject constructor(private val personService: PersonService) :
     private fun configureButtons() {
         create.addThemeVariants(ButtonVariant.LUMO_PRIMARY)
         create.addClickListener {
-            editor.save.isEnabled = true
-            editor.isVisible = true
+            editor.enableForm(PersonDto())
         }
     }
 
@@ -93,10 +92,7 @@ class PersonList @Inject constructor(private val personService: PersonService) :
     //configuration for single select on grid item
     private fun configureSingleSelect(person: PersonDto?) {
         if (person != null) {
-            editor.isVisible = true
-            editor.save.isEnabled = true
-            editor.delete.isEnabled = true
-            editor.populateForm(person)
+            editor.enableForm(person, true)
         } else {
             editor.clearForm()
         }
@@ -107,7 +103,13 @@ class PersonList @Inject constructor(private val personService: PersonService) :
         val div = Div()
         div.className = "details-upload"
         div.setSizeFull()
-        div.add(Label(person.username))
+        div.add(
+            HorizontalLayout(
+                Label("Username:${person.username}"),
+                Label("Used Leaves:${person.usedLeaves.toString()}"),
+                Label("Remaining Leaves:${person.remainingLeaves.toString()}")
+            )
+        )
         return div
     }
 
