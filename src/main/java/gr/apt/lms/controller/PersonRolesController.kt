@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response
 @Path("/person-roles")
 @Produces(MediaType.APPLICATION_JSON)
 class PersonRolesController {
-    @get:Inject
+    @Inject
     lateinit var service: PersonRolesService
 
     @GET
@@ -26,7 +26,7 @@ class PersonRolesController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    fun create(dto: PersonRolesDto?) = Response.ok(service.create(dto)).build()
+    fun create(dto: PersonRolesDto) = Response.ok(service.create(dto)).build()
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)

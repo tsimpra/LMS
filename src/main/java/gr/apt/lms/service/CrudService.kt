@@ -8,4 +8,6 @@ interface CrudService<T> {
 
     fun delete(dto: T): Boolean
 
+    fun findAll(index: Int?, size: Int?): List<T>
+
 }

@@ -15,8 +15,8 @@ import gr.apt.lms.exception.LmsException
 import gr.apt.lms.service.CrudService
 
 abstract class Editor<T : Any>(
-    private var service: CrudService<T>,
-    private var dataHolder: Refreshable,
+    private var service: CrudService<T>
+    //private var refreshable: Refreshable
 ) : VerticalLayout() {
 
     //Create the buttons for our UI
@@ -26,6 +26,7 @@ abstract class Editor<T : Any>(
 
     private var selected: T? = null
     private val formLayout = FormLayout()
+    abstract var refreshable: Refreshable
     abstract val binder: Binder<T>
 
     init {
@@ -64,7 +65,7 @@ abstract class Editor<T : Any>(
                         Notification.show("Person details stored.")
                     }
                     clearForm()
-                    dataHolder.refresh()
+                    refreshable.refresh()
                 }
             } catch (validationException: ValidationException) {
                 Notification.show("An exception happened while trying to store the Person's details.")
@@ -78,7 +79,7 @@ abstract class Editor<T : Any>(
             if (selected != null) {
                 service.delete(selected ?: throw LmsException("cannot delete with empty body"))
                 clearForm()
-                dataHolder.refresh()
+                refreshable.refresh()
                 Notification.show("Person deleted successfully.")
             }
         }

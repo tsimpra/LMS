@@ -49,4 +49,8 @@ class RoleService : CrudService<RoleDto> {
         }
         return false
     }
+
+    override fun findAll(index: Int?, size: Int?): List<RoleDto> {
+        TODO("Not yet implemented")
+    }
 }

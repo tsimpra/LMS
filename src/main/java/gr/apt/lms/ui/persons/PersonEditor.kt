@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 @UIScoped
 class PersonEditor @Inject constructor(
-    personService: PersonService,
-    dataHolder: Refreshable
-) : Editor<PersonDto>(personService, dataHolder) {
+    personService: PersonService
+    //refreshable: Refreshable
+) : Editor<PersonDto>(personService) {
 
     private val id: TextField = TextField("Id")
     private val firstName: TextField = TextField("First Name")
@@ -24,6 +24,7 @@ class PersonEditor @Inject constructor(
     private val username: TextField = TextField("Username")
     private val dateOfEmployment: DatePicker = DatePicker("Date Of Employment", LocalDate.now())
     override val binder: Binder<PersonDto> = Binder(PersonDto::class.java)
+    override lateinit var refreshable: Refreshable
 
     init {
         id.themeName = "custom-text-field-label"

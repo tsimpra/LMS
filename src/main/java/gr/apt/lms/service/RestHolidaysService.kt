@@ -49,4 +49,8 @@ class RestHolidaysService : CrudService<RestHolidaysDto> {
         }
         return false
     }
+
+    override fun findAll(index: Int?, size: Int?): List<RestHolidaysDto> {
+        TODO("Not yet implemented")
+    }
 }

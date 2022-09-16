@@ -2,9 +2,9 @@ package gr.apt.lms.config.security
 
 import io.smallrye.jwt.build.Jwt
 import java.util.*
-import javax.enterprise.context.ApplicationScoped
+import javax.inject.Singleton
 
-@ApplicationScoped
+@Singleton
 object TokenGenerator {
 
     internal const val USERNAME_CLAIM = "username"

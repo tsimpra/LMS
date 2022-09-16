@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response
 @Produces(MediaType.APPLICATION_JSON)
 class AuthenticationController {
 
-    @get:Inject
+    @Inject
     lateinit var tokenGenerator: TokenGenerator
 
     @POST

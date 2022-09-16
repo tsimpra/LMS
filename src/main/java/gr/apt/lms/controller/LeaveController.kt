@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response
 @Path("/leave")
 @Produces(MediaType.APPLICATION_JSON)
 class LeaveController {
-    @get:Inject
+    @Inject
     lateinit var service: LeaveService
 
     @GET

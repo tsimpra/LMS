@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response
 @Path("/rest-holidays")
 @Produces(MediaType.APPLICATION_JSON)
 class RestHolidaysController {
-    @get:Inject
+    @Inject
     lateinit var service: RestHolidaysService
 
     @GET

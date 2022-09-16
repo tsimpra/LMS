@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response
 @Path("/role")
 @Produces(MediaType.APPLICATION_JSON)
 class RoleController {
-    @get:Inject
+    @Inject
     lateinit var service: RoleService
 
     @GET

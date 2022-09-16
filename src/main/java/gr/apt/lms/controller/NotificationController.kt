@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response
 @Path("/notification")
 @Produces(MediaType.APPLICATION_JSON)
 class NotificationController {
-    @get:Inject
+    @Inject
     lateinit var service: NotificationService
 
     @get:Inject

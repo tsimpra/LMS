@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response
 @Produces(MediaType.APPLICATION_JSON)
 class PersonController {
 
-    @get:Inject
+    @Inject
     lateinit var service: PersonService
 
     @GET

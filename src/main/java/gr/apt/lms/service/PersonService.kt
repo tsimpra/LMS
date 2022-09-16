@@ -28,7 +28,7 @@ class PersonService : CrudService<PersonDto> {
     lateinit var mapper: PersonMapper
 
     @Throws(LmsException::class)
-    fun findAll(index: Int?, size: Int?): List<PersonDto> {
+    override fun findAll(index: Int?, size: Int?): List<PersonDto> {
         return try {
             if (index != null && size != null) {
                 val page = Page.of(index, size)

@@ -38,7 +38,7 @@ class LeaveService : CrudService<LeaveDto> {
     lateinit var mapper: LeaveMapper
 
     @Throws(LmsException::class)
-    fun findAll(index: Int?, size: Int?): List<LeaveDto> {
+    override fun findAll(index: Int?, size: Int?): List<LeaveDto> {
         return try {
             if (index != null && size != null) {
                 val page = Page.of(index, size)
