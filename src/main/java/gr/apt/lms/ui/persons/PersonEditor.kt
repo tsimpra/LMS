@@ -6,6 +6,7 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
 import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.person.PersonDto
+import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
@@ -18,11 +19,11 @@ class PersonEditor @Inject constructor(
     //refreshable: Refreshable
 ) : Editor<PersonDto>(personService) {
 
-    private val id: TextField = TextField("Id")
-    private val firstName: TextField = TextField("First Name")
-    private val lastName: TextField = TextField("Last Name")
-    private val username: TextField = TextField("Username")
-    private val dateOfEmployment: DatePicker = DatePicker("Date Of Employment", LocalDate.now())
+    private val id: TextField = TextField(PersonDto_.ID_HEADER)
+    private val firstName: TextField = TextField(PersonDto_.FIRST_NAME_HEADER)
+    private val lastName: TextField = TextField(PersonDto_.LAST_NAME_HEADER)
+    private val username: TextField = TextField(PersonDto_.USERNAME_HEADER)
+    private val dateOfEmployment: DatePicker = DatePicker(PersonDto_.DATE_OF_EMPLOYMENT_HEADER, LocalDate.now())
     override val binder: Binder<PersonDto> = Binder(PersonDto::class.java)
     override lateinit var refreshable: Refreshable
 
@@ -37,9 +38,9 @@ class PersonEditor @Inject constructor(
             .withConverter(StringToBigIntegerConverter("Not a valid value for ID"))
             .bind(PersonDto::id, null)
         binder.forField(firstName)
-            .bind(PersonDto::fname) { person, text -> person.fname = text }
+            .bind(PersonDto::firstName) { person, text -> person.firstName = text }
         binder.forField(lastName)
-            .bind(PersonDto::lname) { person, text -> person.lname = text }
+            .bind(PersonDto::lastName) { person, text -> person.lastName = text }
         binder.forField(username)
             .bind(PersonDto::username) { person, text -> person.username = text }
         binder.forField(dateOfEmployment)

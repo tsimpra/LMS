@@ -17,8 +17,8 @@ import java.time.LocalDate
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PersonDto(
     var id: BigInteger? = null,
-    var fname: String? = null,
-    var lname: String? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     var dateOfBirth: LocalDate? = LocalDate.now(),
     var email: String? = null,

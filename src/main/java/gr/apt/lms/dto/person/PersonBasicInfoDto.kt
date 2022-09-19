@@ -11,8 +11,8 @@ import java.math.BigInteger
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class PersonBasicInfoDto(
     var id: BigInteger? = null,
-    var fname: String? = null,
-    var lname: String? = null,
+    var firstName: String? = null,
+    var lastName: String? = null,
     var email: String? = null,
     var username: String? = null,
     var job: Job? = null

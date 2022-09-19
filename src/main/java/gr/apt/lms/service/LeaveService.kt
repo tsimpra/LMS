@@ -108,7 +108,7 @@ class LeaveService : CrudService<LeaveDto> {
 
             //create notification
             notificationService.createNotification(
-                content = "New leave request have been submitted from ${person.fname} ${person.lname}",
+                content = "New leave request have been submitted from ${person.firstName} ${person.lastName}",
                 recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
             )
             true
@@ -127,7 +127,7 @@ class LeaveService : CrudService<LeaveDto> {
 
             //create notification
             notificationService.createNotification(
-                content = "A leave request have been updated from ${person.fname} ${person.lname}",
+                content = "A leave request have been updated from ${person.firstName} ${person.lastName}",
                 recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
             )
             true

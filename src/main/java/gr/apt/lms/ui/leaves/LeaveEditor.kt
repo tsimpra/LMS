@@ -7,6 +7,7 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
 import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.leave.LeaveDto
+import gr.apt.lms.metamodel.dto.LeaveDto_
 import gr.apt.lms.persistence.enumeration.LeaveType
 import gr.apt.lms.service.LeaveService
 import gr.apt.lms.ui.Editor
@@ -17,12 +18,12 @@ import javax.inject.Inject
 @UIScoped
 class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<LeaveDto>(leaveService) {
 
-    private val id: TextField = TextField("Id")
-    private val description: TextField = TextField("Description")
+    private val id: TextField = TextField(LeaveDto_.ID_HEADER)
+    private val description: TextField = TextField(LeaveDto_.DESCRIPTION_HEADER)
     private val type: Select<LeaveType> = Select()
-    private val startDate: DatePicker = DatePicker("Start Date", LocalDate.now())
-    private val endDate: DatePicker = DatePicker("End Date")
-    private val personId: TextField = TextField("Person Id")
+    private val startDate: DatePicker = DatePicker(LeaveDto_.START_DATE_HEADER, LocalDate.now())
+    private val endDate: DatePicker = DatePicker(LeaveDto_.END_DATE_HEADER)
+    private val personId: TextField = TextField(LeaveDto_.PERSON_ID_HEADER)
     override val binder: Binder<LeaveDto> = Binder(LeaveDto::class.java)
     override lateinit var refreshable: Refreshable
 
@@ -30,6 +31,8 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
         id.themeName = "custom-text-field-label"
         //Setting the read only fields
         id.isReadOnly = true
+
+        type.label = LeaveDto_.TYPE_HEADER
         type.setItems(*LeaveType.values())
 
         //Bind form items

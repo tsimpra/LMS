@@ -7,6 +7,7 @@ import com.vaadin.flow.component.splitlayout.SplitLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.person.PersonDto
+import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.ui.GridList
 import gr.apt.lms.ui.MainLayout
@@ -40,17 +41,17 @@ class PersonList
         gridList.grid.addClassName("persons-grid")
         val stringComparator: (String?, String?) -> Int =
             { a: String?, b: String? -> if (a == null) -1 else if (b == null) 1 else a.compareTo(b) }
-        gridList.grid.addColumn(PersonDto::fname).setHeader("First Name")
-            .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.fname, b.fname) }
-        gridList.grid.addColumn(PersonDto::lname).setHeader("Last Name")
-            .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.lname, b.lname) }
-        gridList.grid.addColumn(PersonDto::dateOfBirth).setHeader("Date of Birth")
-        gridList.grid.addColumn(PersonDto::dateOfEmployment).setHeader("Date of Employment")
-        gridList.grid.addColumn(PersonDto::email).setHeader("Email")
+        gridList.grid.addColumn(PersonDto::firstName).setHeader(PersonDto_.FIRST_NAME_HEADER)
+            .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.firstName, b.firstName) }
+        gridList.grid.addColumn(PersonDto::lastName).setHeader(PersonDto_.LAST_NAME_HEADER)
+            .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.lastName, b.lastName) }
+        gridList.grid.addColumn(PersonDto::dateOfBirth).setHeader(PersonDto_.DATE_OF_BIRTH_HEADER)
+        gridList.grid.addColumn(PersonDto::dateOfEmployment).setHeader(PersonDto_.DATE_OF_EMPLOYMENT_HEADER)
+        gridList.grid.addColumn(PersonDto::email).setHeader(PersonDto_.EMAIL_HEADER)
             .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.email, b.email) }
-        gridList.grid.addColumn(PersonDto::job).setHeader("Job")
+        gridList.grid.addColumn(PersonDto::job).setHeader(PersonDto_.JOB_HEADER)
             .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.job?.name, b.job?.name) }
-        gridList.grid.addColumn(PersonDto::enabled).setHeader("Enabled")
+        gridList.grid.addColumn(PersonDto::enabled).setHeader(PersonDto_.ENABLED_HEADER)
             .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.enabled?.name, b.enabled?.name) }
 //        grid.addColumn(ValueProvider<Person, Any> { person: Person ->
 //            val titles: List<Title> = person.getTitles()

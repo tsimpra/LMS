@@ -19,11 +19,11 @@ open class Person : AbstractEntity() {
 
     @Basic
     @Column(name = "fname", nullable = true, length = 50)
-    open var fname: @NotNull String? = null
+    open var firstName: @NotNull String? = null
 
     @Basic
     @Column(name = "lname", nullable = true, length = 60)
-    open var lname: @NotNull String? = null
+    open var lastName: @NotNull String? = null
 
     @Basic
     @Column(name = "date_of_birth", nullable = true)

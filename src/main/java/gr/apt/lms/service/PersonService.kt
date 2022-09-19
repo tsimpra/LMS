@@ -60,7 +60,7 @@ class PersonService : CrudService<PersonDto> {
 
             //create notification
             notificationService.createNotification(
-                content = "New person had been added: ${entity.fname} ${entity.lname}",
+                content = "New person had been added: ${entity.firstName} ${entity.lastName}",
                 recipientRoleIds = mutableSetOf(Role.ROLE_ADMIN)
             )
             true

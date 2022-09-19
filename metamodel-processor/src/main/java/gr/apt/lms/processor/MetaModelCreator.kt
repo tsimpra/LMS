@@ -6,6 +6,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 
 internal const val SUFFIX = "_"
+internal const val HEADER_SUFFIX = "_HEADER"
 internal const val PACKAGE_TARGET = "gr.apt.lms.metamodel"
 internal const val ENTITY_CLASS_TARGET = "entity"
 internal const val DTO_CLASS_TARGET = "dto"
@@ -56,6 +57,10 @@ private fun Collection<ClassType>.generateMetamodel(
         fields.forEach { field ->
             out.append("    const val ${field.name.screamingSnakeCase()} = \"${field.name}\"\n")
         }
+        out.append("\n")
+        fields.forEach { field ->
+            out.append("    const val ${field.name.screamingSnakeCase()}$HEADER_SUFFIX = \"${field.name.header()}\"\n")
+        }
         out.append("}\n")
         out.flush()
         out.close()
@@ -66,7 +71,6 @@ private fun String.screamingSnakeCase(): String {
     if (isBlank()) return this
     val screamingSnakeCase = StringBuilder((length * 1.5).toInt())
 
-    this.toCharArray().forEach { }
     for (c in this) {
         when (c) {
             in 'a'..'z' -> screamingSnakeCase.append(c.uppercaseChar())
@@ -77,4 +81,24 @@ private fun String.screamingSnakeCase(): String {
         }
     }
     return screamingSnakeCase.toString()
+}
+
+private fun String.header(): String {
+    if (isBlank()) return this
+    val result = StringBuilder((length * 1.5).toInt())
+
+    for ((idx, c) in this.withIndex()) {
+        if (idx == 0) {
+            result.append(c.uppercase())
+            continue
+        }
+        when (c) {
+            in 'a'..'z' -> result.append(c)
+            in 'A'..'Z' -> result.append(" $c")
+            in '0'..'9', '_' -> result.append(" $c")
+            // we might need to add more accepted characters, but it's highly discouraged
+            else -> throw IllegalArgumentException("Invalid character in camel case identifier: $c ( original string: $this)")
+        }
+    }
+    return result.toString()
 }
