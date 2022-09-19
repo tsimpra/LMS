@@ -20,7 +20,7 @@ class LeaveList
     private var editor: LeaveEditor
 
     init {
-        this.className = "persons-list"
+        this.className = "leaves-list"
         editor = LeaveEditor(leaveService)
         gridList = GridList(LeaveDto::class.java, leaveService, editor)
         configureGrid()
@@ -35,7 +35,7 @@ class LeaveList
     }
 
     private fun configureGrid() {
-        gridList.grid.addClassName("leaves-grid")
+        gridList.grid.addClassName("grid-list")
         gridList.grid.addColumn(LeaveDto::description).setHeader(LeaveDto_.DESCRIPTION_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.description, b.description) }
         gridList.grid.addColumn(LeaveDto::numberOfRequestedLeaves).setHeader(LeaveDto_.NUMBER_OF_REQUESTED_LEAVES)

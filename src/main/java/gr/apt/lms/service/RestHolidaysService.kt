@@ -1,8 +1,11 @@
 package gr.apt.lms.service
 
 import gr.apt.lms.dto.RestHolidaysDto
+import gr.apt.lms.exception.LmsException
 import gr.apt.lms.mapper.RestHolidaysMapper
+import gr.apt.lms.persistence.holiday.RestHolidays
 import gr.apt.lms.repository.RestHolidaysRepository
+import io.quarkus.panache.common.Page
 import java.math.BigInteger
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,9 +20,18 @@ class RestHolidaysService : CrudService<RestHolidaysDto> {
     @Inject
     lateinit var mapper: RestHolidaysMapper
 
-    fun findAll(): List<RestHolidaysDto> {
-        return mapper.entitiesToDtos(repository.listAll())
+    override fun findAll(index: Int?, size: Int?): List<RestHolidaysDto> {
+        return try {
+            if (index != null && size != null) {
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.findAll().page<RestHolidays>(page).list())
+            }
+            mapper.entitiesToDtos(repository.listAll())
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred: ${ex.message}")
+        }
     }
+
 
     fun findById(id: BigInteger): RestHolidaysDto {
         return mapper.entityToDto(repository.findById(id))
@@ -35,7 +47,7 @@ class RestHolidaysService : CrudService<RestHolidaysDto> {
         var entity = repository.findById(dto.id)
         if (entity != null) {
             entity = mapper.DtoToEntity(dto)
-            repository.persistAndFlush(entity)
+            repository.entityManager.merge(entity)
             return true
         }
         return false
@@ -48,9 +60,5 @@ class RestHolidaysService : CrudService<RestHolidaysDto> {
             return true
         }
         return false
-    }
-
-    override fun findAll(index: Int?, size: Int?): List<RestHolidaysDto> {
-        TODO("Not yet implemented")
     }
 }

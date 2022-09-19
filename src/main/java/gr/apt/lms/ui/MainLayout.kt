@@ -13,6 +13,7 @@ import com.vaadin.flow.router.Route
 import com.vaadin.flow.router.RouterLink
 import gr.apt.lms.ui.leaves.LeaveList
 import gr.apt.lms.ui.persons.PersonList
+import gr.apt.lms.ui.restholidays.RestHolidaysList
 
 @Route("")
 class MainLayout : AppLayout() {
@@ -26,7 +27,9 @@ class MainLayout : AppLayout() {
         personsLink.highlightCondition = HighlightConditions.sameLocation()
         val leavesLink = RouterLink("Leaves List", LeaveList::class.java)
         leavesLink.highlightCondition = HighlightConditions.sameLocation()
-        addToDrawer(VerticalLayout(personsLink, leavesLink))
+        val restHolidaysLink = RouterLink("Rest Holidays List", RestHolidaysList::class.java)
+        restHolidaysLink.highlightCondition = HighlightConditions.sameLocation()
+        addToDrawer(VerticalLayout(personsLink, leavesLink, restHolidaysLink))
     }
 
     private fun createHeader() {

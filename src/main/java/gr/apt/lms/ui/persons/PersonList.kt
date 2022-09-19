@@ -39,7 +39,7 @@ class PersonList
 
     /*grid configuration. Adds columns and calls rest configuration methods */
     private fun configureGrid() {
-        gridList.grid.addClassName("persons-grid")
+        gridList.grid.addClassName("grid-list")
         gridList.grid.addColumn(PersonDto::firstName).setHeader(PersonDto_.FIRST_NAME_HEADER)
             .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.firstName, b.firstName) }
         gridList.grid.addColumn(PersonDto::lastName).setHeader(PersonDto_.LAST_NAME_HEADER)

@@ -71,7 +71,6 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
         binder.bindInstanceFields(this)
 
         fillFormLayoutWithComponents(id, description, type, startDate, endDate, personId)
-
     }
 
     override fun LeaveDto.isNewObject() = this.id == null

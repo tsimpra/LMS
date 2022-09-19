@@ -16,7 +16,8 @@ class RestHolidaysController {
 
     @GET
     @Path("/list")
-    fun findAll() = Response.ok(service.findAll()).build()
+    fun findAll(@QueryParam("index") index: Int?, @QueryParam("size") size: Int?) =
+        Response.ok(service.findAll(index, size)).build()
 
 
     @GET
