@@ -1,8 +1,11 @@
 package gr.apt.lms.service
 
 import gr.apt.lms.dto.PersonRolesDto
+import gr.apt.lms.exception.LmsException
 import gr.apt.lms.mapper.PersonRolesMapper
+import gr.apt.lms.persistence.entity.PersonRoles
 import gr.apt.lms.repository.PersonRolesRepository
+import io.quarkus.panache.common.Page
 import java.math.BigInteger
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,8 +20,16 @@ class PersonRolesService : CrudService<PersonRolesDto> {
     @Inject
     lateinit var mapper: PersonRolesMapper
 
-    fun findAll(): List<PersonRolesDto> {
-        return mapper.entitiesToDtos(repository.listAll())
+    override fun findAll(index: Int?, size: Int?): List<PersonRolesDto> {
+        return try {
+            if (index != null && size != null) {
+                val page = Page.of(index, size)
+                return mapper.entitiesToDtos(repository.findAll().page<PersonRoles>(page).list())
+            }
+            mapper.entitiesToDtos(repository.listAll())
+        } catch (ex: Exception) {
+            throw LmsException("An error occurred: ${ex.message}")
+        }
     }
 
     fun findById(id: BigInteger): PersonRolesDto {
@@ -35,7 +46,7 @@ class PersonRolesService : CrudService<PersonRolesDto> {
         var entity = repository.findById(dto.id)
         if (entity != null) {
             entity = mapper.DtoToEntity(dto)
-            repository.persistAndFlush(entity)
+            repository.entityManager.merge(entity)
             return true
         }
         return false
@@ -48,9 +59,5 @@ class PersonRolesService : CrudService<PersonRolesDto> {
             return true
         }
         return false
-    }
-
-    override fun findAll(index: Int?, size: Int?): List<PersonRolesDto> {
-        TODO("Not yet implemented")
     }
 }
