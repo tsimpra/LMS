@@ -58,11 +58,4 @@ open class Person : AbstractEntity() {
     @Enumerated
     @Column(name = "enabled", nullable = true)
     open var enabled: YesOrNo? = null
-
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "personByPersonId")
-//    open val leavesById: Collection<Leave>? = mutableListOf()
-//
-//    @OneToMany(mappedBy = "personByPersonId")
-//    open val personRolesById: Collection<PersonRoles>? = mutableListOf()
 }

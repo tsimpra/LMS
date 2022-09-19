@@ -33,6 +33,7 @@ data class PersonDto(
     var remainingLeaves: Int? = null,
     var enabled: YesOrNo? = null,
     var roles: Collection<RoleDto>? = null
-) : AbstractEntity() {
+) : AbstractEntity()
 
-}
+val PersonDto.fullname
+    get() = this.lastName + " " + this.firstName

@@ -11,6 +11,7 @@ import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.ui.GridList
 import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.utils.stringComparator
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,8 +40,6 @@ class PersonList
     /*grid configuration. Adds columns and calls rest configuration methods */
     private fun configureGrid() {
         gridList.grid.addClassName("persons-grid")
-        val stringComparator: (String?, String?) -> Int =
-            { a: String?, b: String? -> if (a == null) -1 else if (b == null) 1 else a.compareTo(b) }
         gridList.grid.addColumn(PersonDto::firstName).setHeader(PersonDto_.FIRST_NAME_HEADER)
             .setComparator { a: PersonDto, b: PersonDto -> stringComparator(a.firstName, b.firstName) }
         gridList.grid.addColumn(PersonDto::lastName).setHeader(PersonDto_.LAST_NAME_HEADER)

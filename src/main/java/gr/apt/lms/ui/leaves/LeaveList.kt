@@ -3,10 +3,12 @@ package gr.apt.lms.ui.leaves
 import com.vaadin.flow.component.splitlayout.SplitLayout
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.leave.LeaveDto
+import gr.apt.lms.dto.person.fullname
 import gr.apt.lms.metamodel.dto.LeaveDto_
 import gr.apt.lms.service.LeaveService
 import gr.apt.lms.ui.GridList
 import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.utils.stringComparator
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,17 +36,23 @@ class LeaveList
 
     private fun configureGrid() {
         gridList.grid.addClassName("leaves-grid")
-        val stringComparator: (String?, String?) -> Int =
-            { a: String?, b: String? -> if (a == null) -1 else if (b == null) 1 else a.compareTo(b) }
         gridList.grid.addColumn(LeaveDto::description).setHeader(LeaveDto_.DESCRIPTION_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.description, b.description) }
+        gridList.grid.addColumn(LeaveDto::numberOfRequestedLeaves).setHeader(LeaveDto_.NUMBER_OF_REQUESTED_LEAVES)
+            .setComparator { a: LeaveDto, b: LeaveDto ->
+                a.numberOfRequestedLeaves?.minus(
+                    b.numberOfRequestedLeaves ?: 0
+                ) ?: 0
+            }
         gridList.grid.addColumn(LeaveDto::type).setHeader(LeaveDto_.TYPE_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.type?.name, b.type?.name) }
         gridList.grid.addColumn(LeaveDto::startDate).setHeader(LeaveDto_.START_DATE_HEADER)
         gridList.grid.addColumn(LeaveDto::endDate).setHeader(LeaveDto_.END_DATE_HEADER)
         gridList.grid.addColumn(LeaveDto::approved).setHeader(LeaveDto_.APPROVED_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.approved?.name, b.approved?.name) }
-        gridList.grid.addColumn(LeaveDto::approvedBy).setHeader(LeaveDto_.APPROVED_BY_HEADER)
+        gridList.grid.addColumn({ entity ->
+            if (entity.approvedBy != null) entity.approvedBy!!.fullname else ""
+        }).setHeader(LeaveDto_.APPROVED_BY_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto ->
                 stringComparator(
                     a.approvedBy?.lastName,

@@ -17,3 +17,5 @@ data class PersonBasicInfoDto(
     var username: String? = null,
     var job: Job? = null
 )
+val PersonBasicInfoDto.fullname
+    get() = this.lastName + " " + this.firstName

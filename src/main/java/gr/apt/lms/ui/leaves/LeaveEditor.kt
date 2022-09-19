@@ -7,11 +7,15 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
 import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.leave.LeaveDto
+import gr.apt.lms.dto.person.PersonDto
+import gr.apt.lms.dto.person.fullname
 import gr.apt.lms.metamodel.dto.LeaveDto_
 import gr.apt.lms.persistence.enumeration.LeaveType
 import gr.apt.lms.service.LeaveService
+import gr.apt.lms.service.PersonService
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import io.quarkus.arc.Arc
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -23,7 +27,7 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
     private val type: Select<LeaveType> = Select()
     private val startDate: DatePicker = DatePicker(LeaveDto_.START_DATE_HEADER, LocalDate.now())
     private val endDate: DatePicker = DatePicker(LeaveDto_.END_DATE_HEADER)
-    private val personId: TextField = TextField(LeaveDto_.PERSON_ID_HEADER)
+    private val personId: Select<PersonDto> = Select()
     override val binder: Binder<LeaveDto> = Binder(LeaveDto::class.java)
     override lateinit var refreshable: Refreshable
 
@@ -34,6 +38,14 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
 
         type.label = LeaveDto_.TYPE_HEADER
         type.setItems(*LeaveType.values())
+
+        personId.label = LeaveDto_.PERSON_ID_HEADER
+        val personService = Arc.container().instance(PersonService::class.java).get()
+        personId.setItems(personService.findAll(null, null))
+        // set how we display the select list items
+        personId.setItemLabelGenerator {
+            it.fullname
+        }
 
         //Bind form items
         binder.forField(id)
@@ -49,9 +61,12 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
         binder.forField(endDate)
             .bind(LeaveDto::endDate) { leave, date -> leave.endDate = date }
         binder.forField(personId)
-            .withNullRepresentation("")
-            .withConverter(StringToBigIntegerConverter("Not a valid value for ID"))
-            .bind(LeaveDto::personId) { leave, text -> leave.personId = text }
+            .bind({ leaveDto: LeaveDto ->
+                if (leaveDto.personId != null)
+                    personService.findById(leaveDto.personId!!)
+                else
+                    PersonDto()
+            }) { leave, text -> leave.personId = text.id }
         //not sure if we need this
         binder.bindInstanceFields(this)
 
@@ -60,5 +75,4 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
     }
 
     override fun LeaveDto.isNewObject() = this.id == null
-
 }
