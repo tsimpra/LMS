@@ -1,24 +1,30 @@
 package gr.apt.lms.ui.persons
 
+import com.vaadin.flow.component.Unit
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
-import com.vaadin.flow.component.splitlayout.SplitLayout
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.metamodel.dto.PersonDto_
+import gr.apt.lms.service.PersonRolesService
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.ui.GridList
 import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.ui.personroles.PersonRolesList
 import gr.apt.lms.utils.stringComparator
+import io.quarkus.arc.Arc
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 @Route(value = "/persons", layout = MainLayout::class)
 class PersonList
-@Inject constructor(personService: PersonService) : SplitLayout() {
+@Inject constructor(personService: PersonService) : VerticalLayout() {
     private var gridList: GridList<PersonDto>
     private var editor: PersonEditor
 
@@ -32,9 +38,10 @@ class PersonList
         editor.refreshable = gridList
 
         //create the page UI
-        this.addToPrimary(gridList)
-        this.addToSecondary(editor)
+        this.add(gridList)
+        //this.addToSecondary(editor)
         this.setSizeFull()
+
     }
 
     /*grid configuration. Adds columns and calls rest configuration methods */
@@ -65,6 +72,14 @@ class PersonList
                 person
             )
         })
+        gridList.grid.addComponentColumn { entity ->
+            val editButton = Button("Edit")
+            editButton.addClickListener {
+                editDialog(entity)
+            }
+            editButton
+        }.setHeader(PersonDto_.ROLES_HEADER)
+        gridList.grid.recalculateColumnWidths()
     }
 
     //configuration for grid item details
@@ -80,6 +95,17 @@ class PersonList
             )
         )
         return div
+    }
+
+    private fun editDialog(entity: PersonDto) {
+        val dialog = Dialog()
+
+        val personRolesGrid = PersonRolesList(Arc.container().instance(PersonRolesService::class.java).get())
+        personRolesGrid.personIdFilter = entity.id
+        dialog.add(personRolesGrid)
+        dialog.setHeight(60.0f, Unit.PERCENTAGE)
+        dialog.setWidth(40.0f, Unit.PERCENTAGE)
+        dialog.open()
     }
 }
 

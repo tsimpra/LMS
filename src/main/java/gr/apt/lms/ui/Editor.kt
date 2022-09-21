@@ -1,14 +1,15 @@
 package gr.apt.lms.ui
 
 import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.Unit
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
+import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.formlayout.FormLayout
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.notification.Notification
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
-import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.binder.ValidationException
 import gr.apt.lms.exception.LmsException
@@ -17,7 +18,7 @@ import gr.apt.lms.service.CrudService
 abstract class Editor<T : Any>(
     private var service: CrudService<T>
     //private var refreshable: Refreshable
-) : VerticalLayout() {
+) : Dialog() {
 
     //Create the buttons for our UI
     private val save = Button("Save", Icon(VaadinIcon.CHECK))
@@ -39,9 +40,10 @@ abstract class Editor<T : Any>(
 
         configureButtons()
 
+        //this.width = "35%"
         this.add(formLayout, groupButtons(save, delete, cancel))
-        this.width = "35%"
-
+        this.setHeight(60.0f, Unit.PERCENTAGE)
+        this.setWidth(40.0f, Unit.PERCENTAGE)
     }
 
     abstract fun T.isNewObject(): Boolean
@@ -50,7 +52,7 @@ abstract class Editor<T : Any>(
         formLayout.add(*c)
     }
 
-    internal fun configureButtons() {
+    private fun configureButtons() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY)
         save.isEnabled = false
         save.addClickListener {
@@ -94,7 +96,8 @@ abstract class Editor<T : Any>(
         populateForm(null)
         save.isEnabled = false
         delete.isEnabled = false
-        this.isVisible = false
+        this.close()
+        //this.isVisible = false
     }
 
     internal fun enableForm(value: T, enableDelete: Boolean = false) {
@@ -102,6 +105,7 @@ abstract class Editor<T : Any>(
         save.isEnabled = true
         this.isVisible = true
         delete.isEnabled = enableDelete
+        this.open()
     }
 
     private fun populateForm(value: T?) {

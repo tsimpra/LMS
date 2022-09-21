@@ -1,6 +1,6 @@
 package gr.apt.lms.ui.leaves
 
-import com.vaadin.flow.component.splitlayout.SplitLayout
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.leave.LeaveDto
 import gr.apt.lms.dto.person.fullname
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 @Route(value = "/leaves", layout = MainLayout::class)
 class LeaveList
-@Inject constructor(leaveService: LeaveService) : SplitLayout() {
+@Inject constructor(leaveService: LeaveService) : VerticalLayout() {
     private var gridList: GridList<LeaveDto>
     private var editor: LeaveEditor
 
@@ -29,8 +29,8 @@ class LeaveList
         editor.refreshable = gridList
 
         //create the page UI
-        this.addToPrimary(gridList)
-        this.addToSecondary(editor)
+        this.add(gridList)
+        //this.addToSecondary(editor)
         this.setSizeFull()
     }
 
@@ -40,9 +40,7 @@ class LeaveList
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.description, b.description) }
         gridList.grid.addColumn(LeaveDto::numberOfRequestedLeaves).setHeader(LeaveDto_.NUMBER_OF_REQUESTED_LEAVES)
             .setComparator { a: LeaveDto, b: LeaveDto ->
-                a.numberOfRequestedLeaves?.minus(
-                    b.numberOfRequestedLeaves ?: 0
-                ) ?: 0
+                a.numberOfRequestedLeaves?.compareTo(b.numberOfRequestedLeaves ?: 0) ?: 0
             }
         gridList.grid.addColumn(LeaveDto::type).setHeader(LeaveDto_.TYPE_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.type?.name, b.type?.name) }

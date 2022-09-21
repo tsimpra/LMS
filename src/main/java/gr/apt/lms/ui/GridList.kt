@@ -19,14 +19,18 @@ class GridList<T : Any>(
     //Create the buttons for our UI
     private val create = Button("Create", Icon(VaadinIcon.PLUS))
 
+    val filters = mutableMapOf<String, (T) -> Boolean>()
+
     init {
         grid.asSingleSelect().addValueChangeListener {
             configureSingleSelect(it.value)
         }
         configureButtons()
         refresh()
+        grid.setSizeFull()
 
         this.add(create, grid)
+        this.setSizeFull()
     }
 
     //Buttons Configuration
@@ -47,9 +51,12 @@ class GridList<T : Any>(
     }
 
     //Refreshes the grid
-    final override fun refresh() {
+    override fun refresh() {
         grid.select(null)
-        grid.setItems(service.findAll(null, null))
+        val items = grid.setItems(service.findAll(null, null))
+        filters.forEach {
+            items.addFilter(it.value)
+        }
         grid.dataProvider.refreshAll()
     }
 }

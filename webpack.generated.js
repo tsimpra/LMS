@@ -111,9 +111,9 @@ if (watchDogPort) {
 // Compute the entries that webpack have to visit
 const webPackEntries = {};
 if (useClientSideIndexFileForBootstrapping) {
-  webPackEntries.bundle = clientSideIndexEntryPoint;
-  const dirName = path.dirname(fileNameOfTheFlowGeneratedMainEntryPoint);
-  const baseName = path.basename(fileNameOfTheFlowGeneratedMainEntryPoint, '.js');
+    webPackEntries.bundle = clientSideIndexEntryPoint;
+    const dirName = path.dirname(fileNameOfTheFlowGeneratedMainEntryPoint);
+    const baseName = path.basename(fileNameOfTheFlowGeneratedMainEntryPoint, '.js');
     if (
         fs
             .readdirSync(dirName)
@@ -355,17 +355,17 @@ module.exports = {
                   .sort()
                   .filter((value, index, self) => self.indexOf(value) === index);
 
-        let miniStats = {
-          assetsByChunkName: st.assetsByChunkName,
-          npmModules: npmModules
-        };
+              let miniStats = {
+                  assetsByChunkName: st.assetsByChunkName,
+                  npmModules: npmModules
+              };
 
-        if (!devMode) {
-            fs.writeFile(statsFile, JSON.stringify(miniStats, null, 1), () => done());
-        } else {
-            stats = miniStats;
-            done();
-        }
+              if (!devMode) {
+                  fs.writeFile(statsFile, JSON.stringify(miniStats, null, 1), () => done());
+              } else {
+                  stats = miniStats;
+                  done();
+              }
           });
       },
 

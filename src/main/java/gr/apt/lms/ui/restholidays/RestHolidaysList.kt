@@ -1,6 +1,6 @@
 package gr.apt.lms.ui.restholidays
 
-import com.vaadin.flow.component.splitlayout.SplitLayout
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.RestHolidaysDto
 import gr.apt.lms.metamodel.dto.RestHolidaysDto_
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 @Route(value = "/rest/holidays", layout = MainLayout::class)
 class RestHolidaysList
-@Inject constructor(restHolidaysService: RestHolidaysService) : SplitLayout() {
+@Inject constructor(restHolidaysService: RestHolidaysService) : VerticalLayout() {
     private var gridList: GridList<RestHolidaysDto>
     private var editor: RestHolidaysEditor
 
@@ -28,8 +28,8 @@ class RestHolidaysList
         editor.refreshable = gridList
 
         //create the page UI
-        this.addToPrimary(gridList)
-        this.addToSecondary(editor)
+        this.add(gridList)
+        //this.addToSecondary(editor)
         this.setSizeFull()
     }
 
