@@ -15,6 +15,7 @@ import gr.apt.lms.service.PersonService
 import gr.apt.lms.service.RoleService
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import gr.apt.lms.utils.autocomplete
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.inject.Inject
@@ -37,7 +38,6 @@ class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesServic
             if (value != null) {
                 val person = personService.findById(value)
                 personId.setItems(person)
-                personId.value = person
             } else {
                 personId.setItems(PersonDto())
             }
@@ -53,12 +53,14 @@ class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesServic
         roleId.setItemLabelGenerator {
             it.role
         }
+        roleId.autocomplete()
 
         personId.label = PersonRolesDto_.PERSON_ID_HEADER
         //personId.setItems(personService.findAll(null, null))
         personId.setItemLabelGenerator {
             it.fullname
         }
+        personId.autocomplete()
 
         //Bind form items
         binder.forField(id)
