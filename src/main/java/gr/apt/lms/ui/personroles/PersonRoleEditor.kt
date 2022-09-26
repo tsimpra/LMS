@@ -21,7 +21,7 @@ import java.math.BigInteger
 import javax.inject.Inject
 
 @UIScoped
-class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesService) :
+class PersonRoleEditor @Inject constructor(private val personRolesService: PersonRolesService) :
     Editor<PersonRolesDto>(personRolesService), Refreshable {
 
     private val id: TextField = TextField(PersonRolesDto_.ID_HEADER)
@@ -38,6 +38,10 @@ class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesServic
             if (value != null) {
                 val person = personService.findById(value)
                 personId.setItems(person)
+                val roleIdsByPersonId = personRolesService.repository.getRoleIdsByPersonId(value)
+                roleId.setItems(roleService.findAll(null, null)).addFilter {
+                    !roleIdsByPersonId.contains(it.id)
+                }
             } else {
                 personId.setItems(PersonDto())
             }

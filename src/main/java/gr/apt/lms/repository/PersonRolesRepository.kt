@@ -9,9 +9,13 @@ import javax.inject.Singleton
 @Singleton
 class PersonRolesRepository : PanacheRepositoryBase<PersonRoles?, BigInteger?> {
 
-    fun getRoleIdsByPersonId(personId: BigInteger) =
-        find("select ${PersonRoles_.ROLE_ID} from PersonRoles where ${PersonRoles_.PERSON_ID} = ?1", personId)
-            .project(BigInteger::class.java)
-            .list<BigInteger>()
+    fun getRoleIdsByPersonId(personId: BigInteger): List<BigInteger> =
+        this.entityManager.createQuery(
+            "select ${PersonRoles_.ROLE_ID} from PersonRoles where ${PersonRoles_.PERSON_ID} = ?1",
+            BigInteger::class.java
+        )
+            .setParameter(1, personId)
+            .resultList
+
 
 }
