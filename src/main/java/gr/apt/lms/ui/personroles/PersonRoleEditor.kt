@@ -38,10 +38,6 @@ class PersonRoleEditor @Inject constructor(private val personRolesService: Perso
             if (value != null) {
                 val person = personService.findById(value)
                 personId.setItems(person)
-                val roleIdsByPersonId = personRolesService.repository.getRoleIdsByPersonId(value)
-                roleId.setItems(roleService.findAll(null, null)).addFilter {
-                    !roleIdsByPersonId.contains(it.id)
-                }
             } else {
                 personId.setItems(PersonDto())
             }
@@ -88,6 +84,13 @@ class PersonRoleEditor @Inject constructor(private val personRolesService: Perso
 
 
         fillFormLayoutWithComponents(id, roleId, personId)
+    }
+
+    internal fun filterRolesList(personId: BigInteger) {
+        val roleIdsByPersonId = personRolesService.repository.getRoleIdsByPersonId(personId)
+        roleId.setItems(roleService.findAll(null, null)).addFilter {
+            !roleIdsByPersonId.contains(it.id)
+        }
     }
 
     override fun PersonRolesDto.isNewObject() = this.id == null

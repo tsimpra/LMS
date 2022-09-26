@@ -46,6 +46,11 @@ class PersonRolesList @Inject constructor(personRolesService: PersonRolesService
         editor.isVisible = false
         editor.refreshable = this
 
+        gridList.create.addClickListener {
+            personIdFilter?.let {
+                editor.filterRolesList(it)
+            }
+        }
 
         //create the page UI
         this.add(gridList)

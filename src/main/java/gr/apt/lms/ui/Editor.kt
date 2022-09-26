@@ -88,7 +88,7 @@ abstract class Editor<T : Any>(
 
         cancel.addClickListener {
             clearForm()
-            //dataHolder.refresh()
+            refreshable.refresh()
         }
     }
 

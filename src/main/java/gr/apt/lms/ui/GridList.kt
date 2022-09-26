@@ -17,7 +17,7 @@ class GridList<T : Any>(
     internal val grid = Grid(clas, false)
 
     //Create the buttons for our UI
-    private val create = Button("Create", Icon(VaadinIcon.PLUS))
+    internal val create = Button("Create", Icon(VaadinIcon.PLUS))
 
     val filters = mutableMapOf<String, (T) -> Boolean>()
 
