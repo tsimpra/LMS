@@ -101,11 +101,16 @@ abstract class Editor<T : Any>(
     }
 
     internal fun enableForm(value: T, enableDelete: Boolean = false) {
+        computeEditorComponentsData(value)
         populateForm(value)
         save.isEnabled = true
         this.isVisible = true
         delete.isEnabled = enableDelete
         this.open()
+    }
+
+    internal open fun computeEditorComponentsData(value: T) {
+        //do nothing normally
     }
 
     private fun populateForm(value: T?) {

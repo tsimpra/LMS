@@ -19,6 +19,7 @@ import gr.apt.lms.ui.Refreshable
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.inject.Inject
+import kotlin.streams.toList
 
 @UIScoped
 class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesService) :
@@ -85,11 +86,16 @@ class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesServic
         fillFormLayoutWithComponents(id, roleId, personId)
     }
 
-    internal fun filterRolesList(personId: BigInteger) {
-        val personRolesRepository = Arc.container().instance(PersonRolesRepository::class.java).get()
-        val roleIdsByPersonId = personRolesRepository.getRoleIdsByPersonId(personId)
-        roleId.setItems(roleService.findAll(null, null)).addFilter {
-            !roleIdsByPersonId.contains(it.id)
+    override fun computeEditorComponentsData(value: PersonRolesDto) {
+        if (personIdFilter != null) {
+            val personRolesRepository = Arc.container().instance(PersonRolesRepository::class.java).get()
+            val roleIdsByPersonId = personRolesRepository.getRoleIdsByPersonId(personIdFilter!!)
+            roleId.setItems(roleId.listDataView.items
+                .filter {
+                    if (value.roleId == it.id) true else
+                        !roleIdsByPersonId.contains(it.id)
+                }.toList()
+            )
         }
     }
 
