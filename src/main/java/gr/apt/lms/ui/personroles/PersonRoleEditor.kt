@@ -1,6 +1,5 @@
 package gr.apt.lms.ui.personroles
 
-import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
@@ -10,12 +9,13 @@ import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.dto.person.fullname
 import gr.apt.lms.metamodel.dto.PersonRolesDto_
+import gr.apt.lms.repository.PersonRolesRepository
 import gr.apt.lms.service.PersonRolesService
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.service.RoleService
+import gr.apt.lms.ui.AutoCompletableSelect
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
-import gr.apt.lms.utils.autocomplete
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.inject.Inject
@@ -25,8 +25,9 @@ class PersonRoleEditor @Inject constructor(private val personRolesService: Perso
     Editor<PersonRolesDto>(personRolesService), Refreshable {
 
     private val id: TextField = TextField(PersonRolesDto_.ID_HEADER)
-    private val roleId: Select<RoleDto> = Select()
-    private val personId: Select<PersonDto> = Select()
+    private val roleId: AutoCompletableSelect<RoleDto> = AutoCompletableSelect()
+    private val personId: AutoCompletableSelect<PersonDto> = AutoCompletableSelect()
+
     override val binder: Binder<PersonRolesDto> = Binder(PersonRolesDto::class.java)
     override lateinit var refreshable: Refreshable
     private val personService: PersonService = Arc.container().instance(PersonService::class.java).get()
@@ -53,14 +54,12 @@ class PersonRoleEditor @Inject constructor(private val personRolesService: Perso
         roleId.setItemLabelGenerator {
             it.role
         }
-        roleId.autocomplete()
 
         personId.label = PersonRolesDto_.PERSON_ID_HEADER
         //personId.setItems(personService.findAll(null, null))
         personId.setItemLabelGenerator {
             it.fullname
         }
-        personId.autocomplete()
 
         //Bind form items
         binder.forField(id)
@@ -87,7 +86,8 @@ class PersonRoleEditor @Inject constructor(private val personRolesService: Perso
     }
 
     internal fun filterRolesList(personId: BigInteger) {
-        val roleIdsByPersonId = personRolesService.repository.getRoleIdsByPersonId(personId)
+        val personRolesRepository = Arc.container().instance(PersonRolesRepository::class.java).get()
+        val roleIdsByPersonId = personRolesRepository.getRoleIdsByPersonId(personId)
         roleId.setItems(roleService.findAll(null, null)).addFilter {
             !roleIdsByPersonId.contains(it.id)
         }

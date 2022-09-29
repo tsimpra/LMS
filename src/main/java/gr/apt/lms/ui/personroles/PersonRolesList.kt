@@ -36,7 +36,6 @@ class PersonRolesList @Inject constructor(personRolesService: PersonRolesService
     init {
         this.className = "leaves-list"
         editor = PersonRoleEditor(personRolesService)
-        editor.personIdFilter = personIdFilter
         gridList = GridList(PersonRolesDto::class.java, personRolesService, editor)
         configureGrid()
         gridList.filters["personId"] = { entity: PersonRolesDto ->

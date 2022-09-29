@@ -19,13 +19,13 @@ import javax.transaction.Transactional
 @Transactional
 class PersonService : CrudService<PersonDto> {
     @Inject
-    lateinit var repository: PersonRepository
+    private lateinit var repository: PersonRepository
 
     @Inject
-    lateinit var notificationService: NotificationService
+    private lateinit var notificationService: NotificationService
 
     @Inject
-    lateinit var mapper: PersonMapper
+    private lateinit var mapper: PersonMapper
 
     @Throws(LmsException::class)
     override fun findAll(index: Int?, size: Int?): List<PersonDto> {

@@ -1,7 +1,6 @@
 package gr.apt.lms.ui.leaves
 
 import com.vaadin.flow.component.datepicker.DatePicker
-import com.vaadin.flow.component.select.Select
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
@@ -13,6 +12,7 @@ import gr.apt.lms.metamodel.dto.LeaveDto_
 import gr.apt.lms.persistence.enumeration.LeaveType
 import gr.apt.lms.service.LeaveService
 import gr.apt.lms.service.PersonService
+import gr.apt.lms.ui.AutoCompletableSelect
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
 import io.quarkus.arc.Arc
@@ -24,10 +24,10 @@ class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<Leave
 
     private val id: TextField = TextField(LeaveDto_.ID_HEADER)
     private val description: TextField = TextField(LeaveDto_.DESCRIPTION_HEADER)
-    private val type: Select<LeaveType> = Select()
+    private val type: AutoCompletableSelect<LeaveType> = AutoCompletableSelect()
     private val startDate: DatePicker = DatePicker(LeaveDto_.START_DATE_HEADER, LocalDate.now())
     private val endDate: DatePicker = DatePicker(LeaveDto_.END_DATE_HEADER)
-    private val personId: Select<PersonDto> = Select()
+    private val personId: AutoCompletableSelect<PersonDto> = AutoCompletableSelect()
     override val binder: Binder<LeaveDto> = Binder(LeaveDto::class.java)
     override lateinit var refreshable: Refreshable
 

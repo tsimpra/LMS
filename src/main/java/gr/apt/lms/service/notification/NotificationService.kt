@@ -27,28 +27,28 @@ import javax.transaction.Transactional
 @Transactional
 class NotificationService {
     @Inject
-    lateinit var repository: NotificationRepository
+    private lateinit var repository: NotificationRepository
 
     @Inject
-    lateinit var recipientPersonsRepository: NotificationRecipientPersonsRepository
+    private lateinit var recipientPersonsRepository: NotificationRecipientPersonsRepository
 
     @Inject
-    lateinit var recipientRolesRepository: NotificationRecipientRolesRepository
+    private lateinit var recipientRolesRepository: NotificationRecipientRolesRepository
 
     @Inject
-    lateinit var viewersRepository: NotificationViewersRepository
+    private lateinit var viewersRepository: NotificationViewersRepository
 
     @Inject
-    lateinit var personRepository: PersonRepository
+    private lateinit var personRepository: PersonRepository
 
     @Inject
-    lateinit var roleRepository: RoleRepository
+    private lateinit var roleRepository: RoleRepository
 
     @Inject
-    lateinit var personRoleRepository: PersonRolesRepository
+    private lateinit var personRoleRepository: PersonRolesRepository
 
     @Inject
-    lateinit var mapper: NotificationMapper
+    private lateinit var mapper: NotificationMapper
 
     @Throws(LmsException::class)
     fun findAll(personId: BigInteger, index: Int?, size: Int?): List<NotificationDto> {

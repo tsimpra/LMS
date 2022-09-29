@@ -15,10 +15,10 @@ import javax.transaction.Transactional
 @Transactional
 class RoleService : CrudService<RoleDto> {
     @Inject
-    lateinit var repository: RoleRepository
+    private lateinit var repository: RoleRepository
 
     @Inject
-    lateinit var mapper: RoleMapper
+    private lateinit var mapper: RoleMapper
 
     override fun findAll(index: Int?, size: Int?): List<RoleDto> {
         return try {

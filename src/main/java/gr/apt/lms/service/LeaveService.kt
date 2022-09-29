@@ -26,16 +26,16 @@ import javax.transaction.Transactional
 @Transactional
 class LeaveService : CrudService<LeaveDto> {
     @Inject
-    lateinit var repository: LeaveRepository
+    private lateinit var repository: LeaveRepository
 
     @Inject
-    lateinit var personRepository: PersonRepository
+    private lateinit var personRepository: PersonRepository
 
     @Inject
-    lateinit var notificationService: NotificationService
+    private lateinit var notificationService: NotificationService
 
     @Inject
-    lateinit var mapper: LeaveMapper
+    private lateinit var mapper: LeaveMapper
 
     @Throws(LmsException::class)
     override fun findAll(index: Int?, size: Int?): List<LeaveDto> {
