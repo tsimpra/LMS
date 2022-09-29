@@ -21,7 +21,7 @@ import java.math.BigInteger
 import javax.inject.Inject
 
 @UIScoped
-class PersonRoleEditor @Inject constructor(private val personRolesService: PersonRolesService) :
+class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesService) :
     Editor<PersonRolesDto>(personRolesService), Refreshable {
 
     private val id: TextField = TextField(PersonRolesDto_.ID_HEADER)
