@@ -36,7 +36,7 @@ class MenuEditor @Inject constructor(private val menuService: MenuService) : Edi
             if (it != null) it.description else ""
         }
 
-        path.setItems(RouteConfiguration.forSessionScope().availableRoutes.map { it.template })
+        path.setItems(RouteConfiguration.forSessionScope().availableRoutes.map { "/${it.template}" })
 
         //Bind form items
         binder.forField(id)
