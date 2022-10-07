@@ -1,5 +1,7 @@
 package gr.apt.lms.ui.menus
 
+import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
@@ -11,6 +13,7 @@ import gr.apt.lms.service.MenuService
 import gr.apt.lms.ui.AutoCompletableSelect
 import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import java.math.BigDecimal
 import javax.inject.Inject
 
 @UIScoped
@@ -18,9 +21,10 @@ class MenuEditor @Inject constructor(private val menuService: MenuService) : Edi
 
     private val id: TextField = TextField(MenuDto_.ID_HEADER)
     private val description: TextField = TextField(MenuDto_.DESCRIPTION_HEADER)
-    private val path: AutoCompletableSelect<String> = AutoCompletableSelect(MenuDto_.PATH_HEADER)
-    private val icon: TextField = TextField(MenuDto_.ICON_HEADER)
+    private val path: AutoCompletableSelect<String> = AutoCompletableSelect(MenuDto_.PATH_HEADER, true)
+    private val icon: AutoCompletableSelect<VaadinIcon> = AutoCompletableSelect(MenuDto_.ICON_HEADER)
     private val parentId: AutoCompletableSelect<MenuDto> = AutoCompletableSelect(MenuDto_.PARENT_ID_HEADER, true)
+    private val displayOrder: NumberField = NumberField(MenuDto_.DISPLAY_ORDER_HEADER)
     override val binder: Binder<MenuDto> = Binder(MenuDto::class.java)
 
     override lateinit var refreshable: Refreshable
@@ -36,6 +40,8 @@ class MenuEditor @Inject constructor(private val menuService: MenuService) : Edi
             if (it != null) it.description else ""
         }
 
+        icon.setItems(*VaadinIcon.values())
+
         path.setItems(RouteConfiguration.forSessionScope().availableRoutes.map { "/${it.template}" })
 
         //Bind form items
@@ -48,7 +54,13 @@ class MenuEditor @Inject constructor(private val menuService: MenuService) : Edi
         binder.forField(path)
             .bind(MenuDto::path) { menu, text -> menu.path = text }
         binder.forField(icon)
-            .bind(MenuDto::icon) { menu, text -> menu.icon = text }
+            .bind({
+                if (it.icon != null && it.icon!!.isNotEmpty()) VaadinIcon.valueOf(it.icon!!) else null
+            }) { menu, text -> menu.icon = text?.name }
+        binder.forField(displayOrder)
+            .bind({ menuDto: MenuDto ->
+                if (menuDto.displayOrder != null) menuDto.displayOrder!!.toDouble() else 0.0
+            }) { menu, text -> menu.displayOrder = BigDecimal.valueOf(text).toBigInteger() }
         binder.forField(parentId)
             .bind({ menuDto: MenuDto ->
                 if (menuDto.parentId != null)
@@ -59,7 +71,7 @@ class MenuEditor @Inject constructor(private val menuService: MenuService) : Edi
         //not sure if we need this
         binder.bindInstanceFields(this)
 
-        fillFormLayoutWithComponents(id, description, path, icon, parentId)
+        fillFormLayoutWithComponents(id, description, path, icon, displayOrder, parentId)
     }
 
     override fun MenuDto.isNewObject(): Boolean = this.id == null

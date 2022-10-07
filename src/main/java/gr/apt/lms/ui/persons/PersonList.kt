@@ -33,6 +33,7 @@ class PersonList
         editor = PersonEditor(personService)
         gridList = GridList(PersonDto::class.java, personService, editor)
         configureGrid()
+        gridList.grid.recalculateColumnWidths()
 
         editor.isVisible = false
         editor.refreshable = gridList
@@ -79,7 +80,6 @@ class PersonList
             }
             editButton
         }.setHeader(PersonDto_.ROLES_HEADER)
-        gridList.grid.recalculateColumnWidths()
     }
 
     //configuration for grid item details

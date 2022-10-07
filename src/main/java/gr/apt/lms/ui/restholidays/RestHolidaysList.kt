@@ -23,6 +23,7 @@ class RestHolidaysList
         editor = RestHolidaysEditor(restHolidaysService)
         gridList = GridList(RestHolidaysDto::class.java, restHolidaysService, editor)
         configureGrid()
+        gridList.grid.recalculateColumnWidths()
 
         editor.isVisible = false
         editor.refreshable = gridList

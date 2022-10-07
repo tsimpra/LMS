@@ -41,6 +41,7 @@ class PersonRolesList @Inject constructor(personRolesService: PersonRolesService
         gridList.filters["personId"] = { entity: PersonRolesDto ->
             if (personIdFilter != null) entity.personId == personIdFilter else true
         }
+        gridList.grid.recalculateColumnWidths()
 
         editor.isVisible = false
         editor.refreshable = this

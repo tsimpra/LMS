@@ -5,7 +5,7 @@ import com.vaadin.flow.component.checkbox.Checkbox
 import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
-import com.vaadin.flow.component.splitlayout.SplitLayout
+import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
 import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.metamodel.dto.RoleDto_
@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @Singleton
 @Route(value = "/roles", layout = MainLayout::class)
 class RoleList
-@Inject constructor(roleService: RoleService) : SplitLayout() {
+@Inject constructor(roleService: RoleService) : VerticalLayout() {
     private var gridList: GridList<RoleDto>
     private var editor: RoleEditor
 
@@ -33,13 +33,12 @@ class RoleList
         editor = RoleEditor(roleService)
         gridList = GridList(RoleDto::class.java, roleService, editor)
         configureGrid()
-
+        gridList.grid.recalculateColumnWidths()
         editor.isVisible = false
         editor.refreshable = gridList
 
         //create the page UI
-        this.addToPrimary(gridList)
-        this.addToSecondary(editor)
+        this.add(gridList)
         this.setSizeFull()
     }
 
@@ -69,6 +68,10 @@ class MenuButton(val roleId: BigInteger?) : Button() {
             treeDialog.width = "40%"
             treeDialog.height = "60%"
             treeDialog.open()
+            treeDialog.addDialogCloseActionListener {
+                Arc.container().instance(MainLayout::class.java).get().createDrawer()
+                treeDialog.close()
+            }
         }
     }
 

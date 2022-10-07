@@ -14,6 +14,7 @@ data class MenuDto(
     var description: String? = null,
     var path: String? = null,
     var icon: String? = null,
-    var parentId: BigInteger? = null
+    var parentId: BigInteger? = null,
+    var displayOrder: BigInteger? = null
 ) : AbstractEntity()
 

@@ -28,4 +28,8 @@ class Menu : AbstractEntity() {
     @Basic
     @Column(name = "parent_id", nullable = true)
     var parentId: BigInteger? = null
+
+    @Basic
+    @Column(name = "display_order", nullable = true)
+    var displayOrder: BigInteger? = null
 }

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.orderedlayout.Scroller
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import gr.apt.lms.service.CrudService
 
@@ -28,8 +29,9 @@ class GridList<T : Any>(
         configureButtons()
         refresh()
         grid.setSizeFull()
-
-        this.add(create, grid)
+        val scroller = Scroller(grid)
+        scroller.setSizeFull()
+        this.add(create, scroller)
         this.setSizeFull()
     }
 

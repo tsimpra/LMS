@@ -24,6 +24,7 @@ class LeaveList
         editor = LeaveEditor(leaveService)
         gridList = GridList(LeaveDto::class.java, leaveService, editor)
         configureGrid()
+        gridList.grid.recalculateColumnWidths()
 
         editor.isVisible = false
         editor.refreshable = gridList

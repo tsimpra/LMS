@@ -15,6 +15,7 @@ import gr.apt.lms.ui.GridList
 import gr.apt.lms.ui.MainLayout
 import gr.apt.lms.ui.Refreshable
 import gr.apt.lms.utils.stringComparator
+import io.quarkus.arc.Arc
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,6 +33,7 @@ class MenuList
         editor = MenuEditor(menuService)
         gridList = GridList(MenuDto::class.java, menuService, editor)
         configureGrid()
+        gridList.grid.recalculateColumnWidths()
 
         editor.isVisible = false
         editor.refreshable = this
@@ -60,6 +62,8 @@ class MenuList
             .setComparator { a: MenuDto, b: MenuDto -> stringComparator(a.path, b.path) }
         gridList.grid.addColumn(MenuDto::icon).setHeader(MenuDto_.ICON_HEADER)
             .setComparator { a: MenuDto, b: MenuDto -> stringComparator(a.icon, b.icon) }
+        gridList.grid.addColumn(MenuDto::displayOrder).setHeader(MenuDto_.DISPLAY_ORDER_HEADER)
+            .setComparator { a: MenuDto, b: MenuDto -> a.displayOrder?.compareTo(b.displayOrder) ?: 0 }
         gridList.grid.addColumn({
             if (it.parentId != null) menuService.findById(it.parentId!!).description!! else ""
         }).setHeader(MenuDto_.PARENT_ID)
@@ -70,6 +74,7 @@ class MenuList
     override fun refresh() {
         gridList.refresh()
         editor.refresh()
+        Arc.container().instance(MainLayout::class.java).get().createDrawer()
     }
 
 }
