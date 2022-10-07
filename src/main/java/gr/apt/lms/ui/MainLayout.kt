@@ -30,24 +30,27 @@ class MainLayout : AppLayout() {
     }
 
     internal fun createDrawer() {
+        //remove tree grid if its already attached and instantiate new tree grid
         if (treeGrid.isAttached) {
             this.remove(treeGrid)
             treeGrid = TreeGrid<MenuTab>()
         }
+        //fetch user's menu
         val menuRepository = Arc.container().instance(MenuRepository::class.java).get()
         val list: List<Menu> = menuRepository.getUserMenuByUserId(BigInteger.valueOf(-44L))
-        val routerList = mutableListOf<MenuTab>()
-        list.forEach {
+        val routerList = list.map {
             val route = RouteConfiguration.forSessionScope().getRoute(it.path)
-            val routerLink = MenuTab(it, RouterLink("", route.get()))
-            routerList.add(routerLink)
+            MenuTab(it, RouterLink("", route.get()))
         }
+        //create menu tree
         val parents = routerList.filter { it.ref == null }
         val children = { parent: MenuTab -> routerList.filter { it.ref == parent.id } }
         treeGrid.setItems(parents, children)
 
+        //expand tree if selected node exists
         if (selectedNode != null) treeGrid.expand(selectedNode)
 
+        //for grid selection
         treeGrid.asSingleSelect().addValueChangeListener { changed ->
             if (changed.value != null) {
                 selectedNode = changed.value
@@ -66,6 +69,7 @@ class MainLayout : AppLayout() {
                 treeGrid.collapse(treeGrid.treeData.rootItems)
             }
         }
+        //for when selecting the label instead of the grid
         treeGrid.addItemClickListener {
             treeGrid.select(it.item)
         }
