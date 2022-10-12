@@ -114,16 +114,4 @@ class MainLayout : AppLayout() {
         header.defaultVerticalComponentAlignment = FlexComponent.Alignment.BASELINE
         addToNavbar(logoIcon, header)
     }
-
-//    fun checkAuthentication() {
-//        val token = VaadinSession.getCurrent().getAttribute("token") as? String
-//        if (token == null)
-//            ui.get().navigate(LoginView::class.java)
-//        else {
-//            val personId = TokenService.getPersonFromToken(token)
-//            if (personId == null || TokenService.isTokenExpired(token)) {
-//                ui.get().navigate(LoginView::class.java)
-//            }
-//        }
-//    }
 }
