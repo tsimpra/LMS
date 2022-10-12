@@ -1,4 +1,4 @@
-package gr.apt.lms.ui
+package gr.apt.lms.ui.components
 
 import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.Unit
@@ -14,6 +14,7 @@ import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.binder.ValidationException
 import gr.apt.lms.exception.LmsException
 import gr.apt.lms.service.CrudService
+import gr.apt.lms.ui.Refreshable
 
 abstract class Editor<T : Any>(
     private var service: CrudService<T>

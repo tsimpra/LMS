@@ -1,6 +1,6 @@
 package gr.apt.lms.controller
 
-import gr.apt.lms.config.security.TokenGenerator.USERNAME_CLAIM
+import gr.apt.lms.config.security.TokenService.USERNAME_CLAIM
 import gr.apt.lms.dto.notification.NotificationDto
 import gr.apt.lms.exception.LmsException
 import gr.apt.lms.service.notification.NotificationService

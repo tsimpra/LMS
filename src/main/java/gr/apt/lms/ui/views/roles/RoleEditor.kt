@@ -1,4 +1,4 @@
-package gr.apt.lms.ui.roles
+package gr.apt.lms.ui.views.roles
 
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
@@ -7,8 +7,8 @@ import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.metamodel.dto.RoleDto_
 import gr.apt.lms.service.RoleService
-import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import gr.apt.lms.ui.components.Editor
 import javax.inject.Inject
 
 @UIScoped

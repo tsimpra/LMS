@@ -1,4 +1,4 @@
-package gr.apt.lms.ui
+package gr.apt.lms.ui.components
 
 import com.vaadin.flow.component.html.Span
 import com.vaadin.flow.component.icon.Icon

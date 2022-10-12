@@ -1,4 +1,4 @@
-package gr.apt.lms.ui.roles
+package gr.apt.lms.ui.views.roles
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.checkbox.Checkbox
@@ -7,22 +7,24 @@ import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
+import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.metamodel.dto.RoleDto_
 import gr.apt.lms.persistence.entity.Menu
 import gr.apt.lms.repository.MenuRolesRepository
 import gr.apt.lms.service.RoleService
-import gr.apt.lms.ui.GridList
-import gr.apt.lms.ui.MainLayout
-import gr.apt.lms.ui.menus.MenuTree
+import gr.apt.lms.ui.components.GridList
+import gr.apt.lms.ui.views.MainLayout
+import gr.apt.lms.ui.views.menus.MenuTree
 import gr.apt.lms.utils.stringComparator
 import io.quarkus.arc.Arc
 import java.math.BigInteger
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@VaadinSessionScoped
 @Route(value = "/roles", layout = MainLayout::class)
+@RolesAllowed("admin")
 class RoleList
 @Inject constructor(roleService: RoleService) : VerticalLayout() {
     private var gridList: GridList<RoleDto>

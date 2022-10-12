@@ -1,19 +1,21 @@
-package gr.apt.lms.ui.leaves
+package gr.apt.lms.ui.views.leaves
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
+import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.leave.LeaveDto
 import gr.apt.lms.dto.person.fullname
 import gr.apt.lms.metamodel.dto.LeaveDto_
 import gr.apt.lms.service.LeaveService
-import gr.apt.lms.ui.GridList
-import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.ui.components.GridList
+import gr.apt.lms.ui.views.MainLayout
 import gr.apt.lms.utils.stringComparator
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@VaadinSessionScoped
 @Route(value = "/leaves", layout = MainLayout::class)
+@RolesAllowed("admin", "user")
 class LeaveList
 @Inject constructor(leaveService: LeaveService) : VerticalLayout() {
     private var gridList: GridList<LeaveDto>

@@ -1,4 +1,4 @@
-package gr.apt.lms.ui.persons
+package gr.apt.lms.ui.views.persons
 
 import com.vaadin.flow.component.Unit
 import com.vaadin.flow.component.button.Button
@@ -9,20 +9,22 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.Route
+import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonRolesService
 import gr.apt.lms.service.PersonService
-import gr.apt.lms.ui.GridList
-import gr.apt.lms.ui.MainLayout
-import gr.apt.lms.ui.personroles.PersonRolesList
+import gr.apt.lms.ui.components.GridList
+import gr.apt.lms.ui.views.MainLayout
+import gr.apt.lms.ui.views.personroles.PersonRolesList
 import gr.apt.lms.utils.stringComparator
 import io.quarkus.arc.Arc
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@VaadinSessionScoped
 @Route(value = "/persons", layout = MainLayout::class)
+@RolesAllowed("admin")
 class PersonList
 @Inject constructor(personService: PersonService) : VerticalLayout() {
     private var gridList: GridList<PersonDto>

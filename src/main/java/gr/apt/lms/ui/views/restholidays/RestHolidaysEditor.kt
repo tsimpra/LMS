@@ -1,19 +1,19 @@
-package gr.apt.lms.ui.restholidays
+package gr.apt.lms.ui.views.restholidays
 
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
-import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.RestHolidaysDto
 import gr.apt.lms.metamodel.dto.RestHolidaysDto_
 import gr.apt.lms.service.RestHolidaysService
-import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import gr.apt.lms.ui.components.Editor
 import java.time.LocalDate
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@UIScoped
+@Singleton
 class RestHolidaysEditor
 @Inject
 constructor(restHolidaysService: RestHolidaysService) : Editor<RestHolidaysDto>(restHolidaysService) {

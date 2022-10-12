@@ -1,9 +1,8 @@
-package gr.apt.lms.ui.personroles
+package gr.apt.lms.ui.views.personroles
 
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
-import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.PersonRolesDto
 import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.dto.person.PersonDto
@@ -13,15 +12,16 @@ import gr.apt.lms.repository.PersonRolesRepository
 import gr.apt.lms.service.PersonRolesService
 import gr.apt.lms.service.PersonService
 import gr.apt.lms.service.RoleService
-import gr.apt.lms.ui.AutoCompletableSelect
-import gr.apt.lms.ui.Editor
 import gr.apt.lms.ui.Refreshable
+import gr.apt.lms.ui.components.AutoCompletableSelect
+import gr.apt.lms.ui.components.Editor
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.streams.toList
 
-@UIScoped
+@Singleton
 class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesService) :
     Editor<PersonRolesDto>(personRolesService), Refreshable {
 

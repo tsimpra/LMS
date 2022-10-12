@@ -1,4 +1,4 @@
-package gr.apt.lms.ui.menus
+package gr.apt.lms.ui.views.menus
 
 import com.vaadin.flow.component.treegrid.TreeGrid
 import com.vaadin.quarkus.annotation.UIScoped

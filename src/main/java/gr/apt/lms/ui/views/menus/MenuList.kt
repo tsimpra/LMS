@@ -1,4 +1,4 @@
-package gr.apt.lms.ui.menus
+package gr.apt.lms.ui.views.menus
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -8,19 +8,21 @@ import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
+import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.MenuDto
 import gr.apt.lms.metamodel.dto.MenuDto_
 import gr.apt.lms.service.MenuService
-import gr.apt.lms.ui.GridList
-import gr.apt.lms.ui.MainLayout
 import gr.apt.lms.ui.Refreshable
+import gr.apt.lms.ui.components.GridList
+import gr.apt.lms.ui.views.MainLayout
 import gr.apt.lms.utils.stringComparator
 import io.quarkus.arc.Arc
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@VaadinSessionScoped
 @Route(value = "/menus", layout = MainLayout::class)
+@RolesAllowed("admin")
 class MenuList
 @Inject constructor(private val menuService: MenuService) : VerticalLayout(), Refreshable {
     private var gridList: GridList<MenuDto>

@@ -11,4 +11,7 @@ class PersonRepository : PanacheRepositoryBase<Person?, BigInteger?> {
     fun getPersonBasicInfo(id: BigInteger?): Person? =
         find("${Person_.ID} = ?1", id).singleResult()
 
+    fun getPersonByUsernameAndPassword(username: String, password: String): Person? =
+        find("${Person_.USERNAME} = ?1 and ${Person_.PASSWORD} = ?2", username, password).singleResult<Person>()
+
 }

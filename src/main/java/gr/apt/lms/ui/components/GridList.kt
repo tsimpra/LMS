@@ -1,4 +1,4 @@
-package gr.apt.lms.ui
+package gr.apt.lms.ui.components
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant
@@ -8,6 +8,7 @@ import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.Scroller
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import gr.apt.lms.service.CrudService
+import gr.apt.lms.ui.Refreshable
 
 class GridList<T : Any>(
     private val clas: Class<T>,

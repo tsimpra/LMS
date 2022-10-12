@@ -1,7 +1,7 @@
 package gr.apt.lms.controller
 
 import gr.apt.lms.config.security.AuthenticationDto
-import gr.apt.lms.config.security.TokenGenerator
+import gr.apt.lms.config.security.TokenService
 import javax.inject.Inject
 import javax.ws.rs.Consumes
 import javax.ws.rs.POST
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response
 class AuthenticationController {
 
     @Inject
-    lateinit var tokenGenerator: TokenGenerator
+    lateinit var tokenGenerator: TokenService
 
     @POST
     @Path("/login")

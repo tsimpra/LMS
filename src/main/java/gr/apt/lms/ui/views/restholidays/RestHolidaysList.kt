@@ -1,18 +1,20 @@
-package gr.apt.lms.ui.restholidays
+package gr.apt.lms.ui.views.restholidays
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.Route
+import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.RestHolidaysDto
 import gr.apt.lms.metamodel.dto.RestHolidaysDto_
 import gr.apt.lms.service.RestHolidaysService
-import gr.apt.lms.ui.GridList
-import gr.apt.lms.ui.MainLayout
+import gr.apt.lms.ui.components.GridList
+import gr.apt.lms.ui.views.MainLayout
 import gr.apt.lms.utils.stringComparator
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@VaadinSessionScoped
 @Route(value = "/rest/holidays", layout = MainLayout::class)
+@RolesAllowed("admin")
 class RestHolidaysList
 @Inject constructor(restHolidaysService: RestHolidaysService) : VerticalLayout() {
     private var gridList: GridList<RestHolidaysDto>
