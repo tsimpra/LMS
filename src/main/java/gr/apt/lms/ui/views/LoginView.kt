@@ -23,7 +23,8 @@ class LoginView : Div() {
         login.className = "login-view"
         // Demo purposes only
         style.set("background-color", "var(--lumo-contrast-5pct)")
-            .set("display", "flex").set("justify-content", "center")
+            .set("display", "flex")
+            .set("justify-content", "center")
             .set("padding", "var(--lumo-space-l)");
 
         login.addLoginListener { event ->
