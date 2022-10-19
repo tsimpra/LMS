@@ -6,7 +6,7 @@ import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.exception.LmsException
 import gr.apt.lms.repository.RoleRepository
 import gr.apt.lms.service.PersonService
-import gr.apt.lms.utils.getToken
+import gr.apt.lms.service.getToken
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import java.security.Principal

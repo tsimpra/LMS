@@ -5,7 +5,7 @@ import com.vaadin.flow.component.login.LoginForm
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.flow.server.auth.AnonymousAllowed
-import gr.apt.lms.utils.login
+import gr.apt.lms.service.login
 
 @Route("/login")
 @PreserveOnRefresh

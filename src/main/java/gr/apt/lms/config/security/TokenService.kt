@@ -1,7 +1,7 @@
 package gr.apt.lms.config.security
 
 import com.vaadin.flow.component.notification.Notification
-import gr.apt.lms.utils.logout
+import gr.apt.lms.service.logout
 import io.quarkus.arc.Arc
 import io.smallrye.jwt.auth.principal.JWTParser
 import io.smallrye.jwt.auth.principal.ParseException

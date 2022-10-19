@@ -20,10 +20,10 @@ import gr.apt.lms.exception.LmsException
 import gr.apt.lms.metamodel.entity.Role_
 import gr.apt.lms.persistence.entity.Role
 import gr.apt.lms.repository.RoleRepository
+import gr.apt.lms.service.getToken
+import gr.apt.lms.service.logout
 import gr.apt.lms.ui.components.AutoCompletableSelect
 import gr.apt.lms.ui.components.MenuTabTree
-import gr.apt.lms.utils.getToken
-import gr.apt.lms.utils.logout
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.annotation.security.PermitAll
