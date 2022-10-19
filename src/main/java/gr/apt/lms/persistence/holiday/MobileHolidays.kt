@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.Month
 
 object MobileHolidays {
-    val pascha: LocalDate
+    private val pascha: LocalDate
         get() {
             val year = LocalDate.now().year
             val a = year / 100 - 16 - (year / 100 - 16) / 4 + 10
@@ -16,7 +16,6 @@ object MobileHolidays {
         }
 
     //System.out.println("Clean Monday: "+cleanMonday+" Great Friday: "+greatFriday+" Pascha's Monday: "+paschaMonday+" Holy Spirit: "+holySpirit+ "May 1st: "+may1st);
-    @JvmStatic
     val mobileHolidays: List<LocalDate>
         get() {
             val cleanMonday = pascha.minusDays(48)
@@ -28,6 +27,6 @@ object MobileHolidays {
                 may1st = paschaMonday.plusDays(1)
             }
             //System.out.println("Clean Monday: "+cleanMonday+" Great Friday: "+greatFriday+" Pascha's Monday: "+paschaMonday+" Holy Spirit: "+holySpirit+ "May 1st: "+may1st);
-            return java.util.List.of(cleanMonday, greatFriday, paschaMonday, holySpirit, may1st)
+            return listOf(cleanMonday, greatFriday, paschaMonday, holySpirit, may1st)
         }
 }

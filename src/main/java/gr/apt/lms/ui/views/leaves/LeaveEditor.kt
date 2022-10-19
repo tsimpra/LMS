@@ -4,6 +4,7 @@ import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.leave.LeaveDto
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.dto.person.fullname
@@ -17,9 +18,8 @@ import gr.apt.lms.ui.components.Editor
 import io.quarkus.arc.Arc
 import java.time.LocalDate
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@UIScoped
 class LeaveEditor @Inject constructor(leaveService: LeaveService) : Editor<LeaveDto>(leaveService) {
 
     private val id: TextField = TextField(LeaveDto_.ID_HEADER)

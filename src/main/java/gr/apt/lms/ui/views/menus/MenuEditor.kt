@@ -6,6 +6,7 @@ import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
 import com.vaadin.flow.router.RouteConfiguration
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.MenuDto
 import gr.apt.lms.metamodel.dto.MenuDto_
 import gr.apt.lms.service.MenuService
@@ -14,9 +15,8 @@ import gr.apt.lms.ui.components.AutoCompletableSelect
 import gr.apt.lms.ui.components.Editor
 import java.math.BigDecimal
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@UIScoped
 class MenuEditor @Inject constructor(private val menuService: MenuService) : Editor<MenuDto>(menuService), Refreshable {
 
     private val id: TextField = TextField(MenuDto_.ID_HEADER)

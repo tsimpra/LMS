@@ -15,6 +15,8 @@ class MenuTab(
     val router: RouterLink = RouterLink()
 ) : Tab() {
 
+    private val defaultIcon = Icon()
+
     var id: BigInteger? = null
     var menuLabel: String? = null
     var ref: BigInteger? = null
@@ -26,7 +28,7 @@ class MenuTab(
         router.highlightCondition = HighlightConditions.sameLocation()
         val horizontalLayout = HorizontalLayout()
         if (menu.icon != null && menu.icon!!.isNotEmpty()) horizontalLayout.add(Icon(VaadinIcon.valueOf(menu.icon!!)))
-        else horizontalLayout.add(Icon())
+        else horizontalLayout.add(defaultIcon)
         horizontalLayout.add(Span(menuLabel))
         router.add(horizontalLayout)
         this.add(router)

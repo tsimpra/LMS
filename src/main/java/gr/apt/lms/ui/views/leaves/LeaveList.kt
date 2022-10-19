@@ -1,6 +1,7 @@
 package gr.apt.lms.ui.views.leaves
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.leave.LeaveDto
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @VaadinSessionScoped
 @Route(value = "/leaves", layout = MainLayout::class)
 @RolesAllowed("admin", "user")
+@PreserveOnRefresh
 class LeaveList
 @Inject constructor(leaveService: LeaveService) : VerticalLayout() {
     private var gridList: GridList<LeaveDto>
@@ -41,7 +43,8 @@ class LeaveList
         gridList.grid.addClassName("grid-list")
         gridList.grid.addColumn(LeaveDto::description).setHeader(LeaveDto_.DESCRIPTION_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto -> stringComparator(a.description, b.description) }
-        gridList.grid.addColumn(LeaveDto::numberOfRequestedLeaves).setHeader(LeaveDto_.NUMBER_OF_REQUESTED_LEAVES)
+        gridList.grid.addColumn(LeaveDto::numberOfRequestedLeaves)
+            .setHeader(LeaveDto_.NUMBER_OF_REQUESTED_LEAVES_HEADER)
             .setComparator { a: LeaveDto, b: LeaveDto ->
                 a.numberOfRequestedLeaves?.compareTo(b.numberOfRequestedLeaves ?: 0) ?: 0
             }

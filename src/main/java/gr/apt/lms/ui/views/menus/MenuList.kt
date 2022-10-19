@@ -7,6 +7,7 @@ import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.MenuDto
@@ -17,12 +18,14 @@ import gr.apt.lms.ui.components.GridList
 import gr.apt.lms.ui.views.MainLayout
 import gr.apt.lms.utils.stringComparator
 import io.quarkus.arc.Arc
+import javax.annotation.security.PermitAll
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 
 @VaadinSessionScoped
 @Route(value = "/menus", layout = MainLayout::class)
 @RolesAllowed("admin")
+@PreserveOnRefresh
 class MenuList
 @Inject constructor(private val menuService: MenuService) : VerticalLayout(), Refreshable {
     private var gridList: GridList<MenuDto>
@@ -73,6 +76,8 @@ class MenuList
 
     }
 
+    //added permit all annotation cause unauthorized action was thrown from quarkus security
+    @PermitAll
     override fun refresh() {
         gridList.refresh()
         editor.refresh()

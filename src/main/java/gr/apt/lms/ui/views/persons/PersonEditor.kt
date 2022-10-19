@@ -4,6 +4,7 @@ import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonService
@@ -11,9 +12,8 @@ import gr.apt.lms.ui.Refreshable
 import gr.apt.lms.ui.components.Editor
 import java.time.LocalDate
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@UIScoped
 class PersonEditor @Inject constructor(
     personService: PersonService
     //refreshable: Refreshable

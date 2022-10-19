@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dialog.Dialog
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.RoleDto
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @VaadinSessionScoped
 @Route(value = "/roles", layout = MainLayout::class)
 @RolesAllowed("admin")
+@PreserveOnRefresh
 class RoleList
 @Inject constructor(roleService: RoleService) : VerticalLayout() {
     private var gridList: GridList<RoleDto>

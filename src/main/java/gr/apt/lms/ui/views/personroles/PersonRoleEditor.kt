@@ -3,6 +3,7 @@ package gr.apt.lms.ui.views.personroles
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.PersonRolesDto
 import gr.apt.lms.dto.RoleDto
 import gr.apt.lms.dto.person.PersonDto
@@ -18,16 +19,15 @@ import gr.apt.lms.ui.components.Editor
 import io.quarkus.arc.Arc
 import java.math.BigInteger
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.streams.toList
 
-@Singleton
+@UIScoped
 class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesService) :
     Editor<PersonRolesDto>(personRolesService), Refreshable {
 
     private val id: TextField = TextField(PersonRolesDto_.ID_HEADER)
-    private val roleId: AutoCompletableSelect<RoleDto> = AutoCompletableSelect()
-    private val personId: AutoCompletableSelect<PersonDto> = AutoCompletableSelect()
+    private val roleId: AutoCompletableSelect<RoleDto> = AutoCompletableSelect(PersonRolesDto_.ROLE_ID_HEADER)
+    private val personId: AutoCompletableSelect<PersonDto> = AutoCompletableSelect(PersonRolesDto_.PERSON_ID_HEADER)
 
     override val binder: Binder<PersonRolesDto> = Binder(PersonRolesDto::class.java)
     override lateinit var refreshable: Refreshable
@@ -50,13 +50,11 @@ class PersonRoleEditor @Inject constructor(personRolesService: PersonRolesServic
         //Setting the read only fields
         id.isReadOnly = true
 
-        roleId.label = PersonRolesDto_.ROLE_ID_HEADER
         roleId.setItems(roleService.findAll(null, null))
         roleId.setItemLabelGenerator {
             it.role
         }
 
-        personId.label = PersonRolesDto_.PERSON_ID_HEADER
         //personId.setItems(personService.findAll(null, null))
         personId.setItemLabelGenerator {
             it.fullname

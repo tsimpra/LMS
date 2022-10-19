@@ -1,6 +1,7 @@
 package gr.apt.lms.ui.views.restholidays
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.RestHolidaysDto
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @VaadinSessionScoped
 @Route(value = "/rest/holidays", layout = MainLayout::class)
 @RolesAllowed("admin")
+@PreserveOnRefresh
 class RestHolidaysList
 @Inject constructor(restHolidaysService: RestHolidaysService) : VerticalLayout() {
     private var gridList: GridList<RestHolidaysDto>
@@ -32,7 +34,6 @@ class RestHolidaysList
 
         //create the page UI
         this.add(gridList)
-        //this.addToSecondary(editor)
         this.setSizeFull()
     }
 

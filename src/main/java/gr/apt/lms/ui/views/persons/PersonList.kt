@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
+import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
 import com.vaadin.quarkus.annotation.VaadinSessionScoped
 import gr.apt.lms.dto.person.PersonDto
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @VaadinSessionScoped
 @Route(value = "/persons", layout = MainLayout::class)
 @RolesAllowed("admin")
+@PreserveOnRefresh
 class PersonList
 @Inject constructor(personService: PersonService) : VerticalLayout() {
     private var gridList: GridList<PersonDto>

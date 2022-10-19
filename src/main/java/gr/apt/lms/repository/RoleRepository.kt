@@ -9,13 +9,13 @@ import javax.inject.Singleton
 
 @Singleton
 class RoleRepository : PanacheRepositoryBase<Role?, BigInteger?> {
-    fun getPersonRoles(id: BigInteger) =
+    fun getPersonRoles(personId: BigInteger) =
         find(
             "select new Role(rol.${Role_.ID},rol.${Role_.ROLE}) " +
                     "from Role rol " +
                     "join PersonRoles pro on rol.${Role_.ID} = pro.${PersonRoles_.ROLE_ID} " +
                     "where pro.${PersonRoles_.PERSON_ID} = ?1",
-            id
+            personId
         ).list<Role>()
 
 }
