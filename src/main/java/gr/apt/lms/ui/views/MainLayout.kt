@@ -36,9 +36,6 @@ class MainLayout : AppLayout() {
     private var treeGrid = MenuTabTree()
     private var selectedRole = AutoCompletableSelect<Role>(Role_.ROLE_HEADER)
     private var layout = VerticalLayout()
-    private val principal: LmsPrincipal
-        get() = VaadinServletRequest.getCurrent().userPrincipal as? LmsPrincipal
-            ?: throw LmsException("user is not authenticated")
 
     init {
         createHeader()
@@ -64,6 +61,8 @@ class MainLayout : AppLayout() {
     }
 
     private fun configureSelectedRole() {
+        val principal: LmsPrincipal = VaadinServletRequest.getCurrent().userPrincipal as? LmsPrincipal
+            ?: throw LmsException("user is not authenticated")
         val roleRepository = Arc.container().instance(RoleRepository::class.java).get()
         selectedRole.setItems(roleRepository.getPersonRoles(BigInteger(principal.name)))
         selectedRole.value =
