@@ -17,14 +17,8 @@ class MenuTabTree : TreeGrid<MenuTab>() {
 
     private var selectedNode: MenuTab? = null
 
-    private val principal: LmsPrincipal
-        get() = VaadinServletRequest.getCurrent().userPrincipal as? LmsPrincipal
-            ?: throw LmsException("user is not authenticated")
-
     init {
-        //configureTreeGrid()
         //for when selecting the label instead of the grid
-        this.addItemClickListener { this.select(it.item) }
         this.addDetachListener {
             selectedNode = null
             this.removeAllColumns()
@@ -38,6 +32,8 @@ class MenuTabTree : TreeGrid<MenuTab>() {
         setTreeData()
         //expand tree if selected node exists
         if (selectedNode != null) this.expand(selectedNode)
+
+        this.addItemClickListener { this.select(it.item) }
         //for grid selection handle navigation and expand/collapse of menu tree
         this.asSingleSelect().addValueChangeListener { changed ->
             if (changed.value != null) {
@@ -60,6 +56,8 @@ class MenuTabTree : TreeGrid<MenuTab>() {
     }
 
     private fun fetchUserMenu(): List<Menu> {
+        val principal: LmsPrincipal = VaadinServletRequest.getCurrent().userPrincipal as? LmsPrincipal
+            ?: throw LmsException("user is not authenticated")
         val menuRepository = Arc.container().instance(MenuRepository::class.java).get()
         return menuRepository.getUserMenuByRoleId(principal.selectedRole)
     }
