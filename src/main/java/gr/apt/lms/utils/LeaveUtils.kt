@@ -9,28 +9,28 @@ import gr.apt.lms.persistence.holiday.MobileHolidays
 import gr.apt.lms.persistence.holiday.PublicHolidays
 import gr.apt.lms.repository.LeaveRepository
 import gr.apt.lms.repository.RestHolidaysRepository
+import io.quarkus.arc.Arc
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.temporal.ChronoUnit
-import javax.enterprise.inject.spi.CDI
+import kotlin.math.roundToInt
 
 
 fun Leave.getNumberOfRequestedLeaves(): Int {
     val startD = this.startDate ?: throw LmsException("Leave with id ${this.id} has null value on start date")
     val endD = this.endDate ?: throw LmsException("Leave with id ${this.id} has null value on end date")
-    val restHolidaysRepository = CDI.current().select<RestHolidaysRepository>(
-        RestHolidaysRepository::class.java
-    ).get()
-    val daysCount = endD.compareTo(startD).plus(1)
+    val restHolidaysRepository = Arc.container().instance(RestHolidaysRepository::class.java).get()
+    val daysCount = ChronoUnit.DAYS.between(startD, endD) + 1 // +1 cause second date is exclusive from calculations
+
     var weekendsCount = 0
     var publicHolidays = 0
     var restHolidays = 0
     val restHolidaysList =
         restHolidaysRepository.list("startDate >= ?1 and endDate <= ?2", startD, endD).filterNotNull()
     for (i in 0 until daysCount) {
-        val day: DayOfWeek? = startD.plusDays(i.toLong())?.getDayOfWeek()
-        val leaveDate = startD.plusDays(i.toLong())
+        val day: DayOfWeek? = startD.plusDays(i)?.getDayOfWeek()
+        val leaveDate = startD.plusDays(i)
         if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
             weekendsCount++
             continue
@@ -39,6 +39,7 @@ fun Leave.getNumberOfRequestedLeaves(): Int {
             MobileHolidays.mobileHolidays.contains(leaveDate)
         ) {
             publicHolidays++
+            continue
         }
         if (restHolidaysList.isNeitherNullNorEmpty()) {
             restHolidaysList.forEach { restHoliday ->
@@ -56,16 +57,16 @@ fun Leave.getNumberOfRequestedLeaves(): Int {
             }
         }
     }
-    return daysCount - weekendsCount - publicHolidays - restHolidays
+    return daysCount.toInt() - weekendsCount - publicHolidays - restHolidays
 }
 
 
 fun calculateTotalNumberOfLeaves(dateOfEmployment: LocalDate): Int {
     val totalDays: Long = ChronoUnit.DAYS.between(
         dateOfEmployment,
-        LocalDate.of(LocalDate.now().getYear(), Month.DECEMBER, 31)
-    ) //compareTo(dateOfEmployment);
-    var leaves = if (totalDays > 25 * 365) {
+        LocalDate.of(LocalDate.now().year, Month.DECEMBER, 31)
+    ) + 1 // +1 cause second date is exclusive from calculations
+    return if (totalDays > 25 * 365) {
         26
     } else if (totalDays > 10 * 365) {
         25
@@ -75,28 +76,25 @@ fun calculateTotalNumberOfLeaves(dateOfEmployment: LocalDate): Int {
         21
     } else {
         var workingDays = 0
-        for (i in dateOfEmployment.getDayOfMonth()..dateOfEmployment.getMonth().maxLength()) {
+        for (i in dateOfEmployment.dayOfMonth..dateOfEmployment.month.maxLength()) {
             val day: DayOfWeek =
-                LocalDate.of(dateOfEmployment.getYear(), dateOfEmployment.getMonth(), i).getDayOfWeek()
+                LocalDate.of(dateOfEmployment.year, dateOfEmployment.month, i).dayOfWeek
             if (day != DayOfWeek.SUNDAY) {
                 workingDays++
             }
         }
-        Math.round(((12 - dateOfEmployment.getMonthValue()) * 25 + workingDays) * (20.0 / 12.0 / 25.0))
-            .toInt()
+        (((12 - dateOfEmployment.monthValue) * 25 + workingDays) * (20.0 / 12.0 / 25.0)).roundToInt()
     }
-    return leaves
 }
 
 
-fun Person.getRemainingLeaves(): Int {
-    return this.numberOfLeaves?.minus(this.getUsedLeaves())
-        ?: throw LmsException("Person with id ${this.id} cannot have null remaining leaves. Consider initializing his number of leaves")
-}
+fun Person.getRemainingLeaves() = this.numberOfLeaves?.minus(this.getUsedLeaves())
+    ?: throw LmsException("Person with id ${this.id} cannot have null remaining leaves. Consider initializing his number of leaves")
+
 
 fun Person.getUsedLeaves(): Int {
     var used = 0
-    val leaveRepository = CDI.current().select(LeaveRepository::class.java).get()
+    val leaveRepository = Arc.container().instance(LeaveRepository::class.java).get()
     val personLeaves =
         leaveRepository.getPersonLeaves(this.id ?: throw LmsException("A person cannot have null id")).filterNotNull()
     if (personLeaves.isNeitherNullNorEmpty()) {

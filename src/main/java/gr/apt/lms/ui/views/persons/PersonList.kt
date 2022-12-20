@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.data.renderer.ComponentRenderer
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
-import com.vaadin.quarkus.annotation.VaadinSessionScoped
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.person.PersonDto
 import gr.apt.lms.metamodel.dto.PersonDto_
 import gr.apt.lms.service.PersonRolesService
@@ -23,7 +23,7 @@ import io.quarkus.arc.Arc
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 
-@VaadinSessionScoped
+@UIScoped
 @Route(value = "/persons", layout = MainLayout::class)
 @RolesAllowed("admin")
 @PreserveOnRefresh

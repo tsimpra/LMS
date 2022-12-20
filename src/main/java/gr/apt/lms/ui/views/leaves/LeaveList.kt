@@ -3,7 +3,7 @@ package gr.apt.lms.ui.views.leaves
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.router.PreserveOnRefresh
 import com.vaadin.flow.router.Route
-import com.vaadin.quarkus.annotation.VaadinSessionScoped
+import com.vaadin.quarkus.annotation.UIScoped
 import gr.apt.lms.dto.leave.LeaveDto
 import gr.apt.lms.dto.person.fullname
 import gr.apt.lms.metamodel.dto.LeaveDto_
@@ -14,7 +14,7 @@ import gr.apt.lms.utils.stringComparator
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 
-@VaadinSessionScoped
+@UIScoped
 @Route(value = "/leaves", layout = MainLayout::class)
 @RolesAllowed("admin", "user")
 @PreserveOnRefresh

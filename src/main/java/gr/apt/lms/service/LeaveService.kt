@@ -1,5 +1,6 @@
 package gr.apt.lms.service
 
+import gr.apt.lms.config.security.TokenService
 import gr.apt.lms.dto.leave.ApproveLeaveDto
 import gr.apt.lms.dto.leave.LeaveDto
 import gr.apt.lms.exception.LmsException
@@ -174,7 +175,11 @@ class LeaveService : CrudService<LeaveDto> {
         }
         entity.approved = dto.approved
         entity.approvedDate = LocalDate.now()
-        entity.approvedBy = BigInteger.ONE // TODO:to be retrieved from token
+        entity.approvedBy = BigInteger(
+            TokenService.getPersonFromToken(
+                getToken() ?: throw LmsException("User Unauthenticated")
+            ).toString()
+        ) // TODO:to be retrieved from token
         repository.persistAndFlush(entity)
 
         //create notification

@@ -62,8 +62,8 @@ object TokenService {
         return try {
             parser.verify(token, secret).getClaim(PERSON_CLAIM) as? Any
         } catch (ex: ParseException) {
-            println("token has expired 1")
-            Notification.show("token has expired 1")
+            println("token has expired")
+            Notification.show("token has expired")
             logout()
             null
         }
@@ -73,8 +73,8 @@ object TokenService {
         return try {
             parser.verify(token, secret).getClaim(USERNAME_CLAIM)
         } catch (ex: ParseException) {
-            println("token has expired 1")
-            Notification.show("token has expired 1")
+            println("token has expired")
+            Notification.show("token has expired")
             logout()
             null
         }
@@ -84,8 +84,8 @@ object TokenService {
         return try {
             parser.verify(token, secret).getClaim(SELECTED_ROLE_CLAIM) as? Any
         } catch (ex: ParseException) {
-            println("token has expired 1")
-            Notification.show("token has expired 1")
+            println("token has expired")
+            Notification.show("token has expired")
             logout()
             null
         }
@@ -96,8 +96,8 @@ object TokenService {
         return try {
             parser.verify(token, secret).groups
         } catch (ex: ParseException) {
-            println("token has expired 1")
-            Notification.show("token has expired 1")
+            println("token has expired")
+            Notification.show("token has expired")
             logout()
             null
         }
@@ -107,8 +107,8 @@ object TokenService {
         return try {
             parser.verify(token, secret).expirationTime < currentTimeSecs()
         } catch (ex: ParseException) {
-            println("token has expired 1")
-            Notification.show("token has expired 1")
+            println("token has expired")
+            Notification.show("token has expired")
             logout()
             true
         }
